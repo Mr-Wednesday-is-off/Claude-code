@@ -413,8 +413,8 @@ const LawEnforcementInteraction = () => {
               <h2 className="text-2xl font-bold mb-4">Street Stop Rights in New York</h2>
               <div className="bg-white dark:bg-gray-800 rounded-lg p-4 border-l-4 border-green-400">
                 <h3 className="font-bold text-green-800 dark:text-green-200 mb-2">🔹 New York is NOT a "Stop and Identify" State</h3>
-                <p className="text-sm mb-4">You are not required to show ID just because an officer asks. They need reasonable suspicion of a crime.</p>
-                <div className="space-y-2">
+                <p className="text-sm mb-4 text-gray-600 dark:text-gray-300">You are not required to show ID just because an officer asks. They need reasonable suspicion of a crime.</p>
+                <div className="space-y-2 text-gray-800 dark:text-gray-200">
                   <div>✓ "Am I free to go?" <span className="text-xs">(4th Amendment - freedom from detention)</span></div>
                   <div>✓ "I invoke my 5th Amendment right to remain silent"</div>
                   <div>✓ "What crime am I suspected of?"</div>
@@ -489,8 +489,8 @@ const LawEnforcementInteraction = () => {
               <h2 className="text-2xl font-bold mb-4">Police at Your Home</h2>
               <div className="bg-white dark:bg-gray-800 rounded-lg p-4 border-l-4 border-yellow-400">
                 <h3 className="font-bold text-yellow-800 dark:text-yellow-200 mb-2">🏠 Your 4th Amendment Castle Doctrine Rights</h3>
-                <p className="text-sm mb-4">Your home has the strongest Fourth Amendment protections against unreasonable searches.</p>
-                <div className="space-y-2">
+                <p className="text-sm mb-4 text-gray-600 dark:text-gray-300">Your home has the strongest Fourth Amendment protections against unreasonable searches.</p>
+                <div className="space-y-2 text-gray-800 dark:text-gray-200">
                   <div>✓ You don't have to open the door</div>
                   <div>✓ You can speak through the closed door</div>
                   <div>✓ Demand to see a warrant signed by a judge</div>
@@ -568,8 +568,8 @@ const LawEnforcementInteraction = () => {
               <h2 className="text-2xl font-bold mb-4">ICE Encounters</h2>
               <div className="bg-white dark:bg-gray-800 rounded-lg p-4 border-l-4 border-purple-400">
                 <h3 className="font-bold text-purple-800 dark:text-purple-200 mb-2">⚖️ Constitutional Rights Apply to Everyone</h3>
-                <p className="text-sm mb-4">Regardless of immigration status, the Constitution protects you.</p>
-                <div className="space-y-2">
+                <p className="text-sm mb-4 text-gray-600 dark:text-gray-300">Regardless of immigration status, the Constitution protects you.</p>
+                <div className="space-y-2 text-gray-800 dark:text-gray-200">
                   <div>✓ 5th Amendment right to remain silent</div>
                   <div>✓ 4th Amendment right against unreasonable searches</div>
                   <div>✓ 6th Amendment right to an attorney</div>
@@ -620,24 +620,24 @@ const LawEnforcementInteraction = () => {
               <h2 className="text-2xl font-bold mb-4">Constitutional Rights During Law Enforcement Interactions</h2>
               <div className="bg-white dark:bg-gray-800 rounded-lg p-4 border-l-4 border-indigo-400">
                 <h3 className="font-bold text-indigo-800 dark:text-indigo-200 mb-2">📜 Key Amendments in Police Encounters</h3>
-                <div className="space-y-3 text-sm">
+                <div className="space-y-3 text-sm text-gray-800 dark:text-gray-200">
                   <div>
                     <strong>1st Amendment:</strong> Right to record police, freedom of speech, assembly
-                    <p className="text-xs mt-1">• You can record any police interaction in public spaces</p>
+                    <p className="text-xs mt-1 text-gray-600 dark:text-gray-400">• You can record any police interaction in public spaces</p>
                   </div>
                   <div>
                     <strong>4th Amendment:</strong> Protection from unreasonable searches and seizures
-                    <p className="text-xs mt-1">• Requires warrant or probable cause for searches</p>
-                    <p className="text-xs">• Protects against unlawful detention</p>
+                    <p className="text-xs mt-1 text-gray-600 dark:text-gray-400">• Requires warrant or probable cause for searches</p>
+                    <p className="text-xs text-gray-600 dark:text-gray-400">• Protects against unlawful detention</p>
                   </div>
                   <div>
                     <strong>5th Amendment:</strong> Right to remain silent, protection against self-incrimination
-                    <p className="text-xs mt-1">• You cannot be forced to answer questions</p>
-                    <p className="text-xs">• Must be clearly invoked to be effective</p>
+                    <p className="text-xs mt-1 text-gray-600 dark:text-gray-400">• You cannot be forced to answer questions</p>
+                    <p className="text-xs text-gray-600 dark:text-gray-400">• Must be clearly invoked to be effective</p>
                   </div>
                   <div>
                     <strong>6th Amendment:</strong> Right to an attorney
-                    <p className="text-xs mt-1">• Applies during custodial interrogation</p>
+                    <p className="text-xs mt-1 text-gray-600 dark:text-gray-400">• Applies during custodial interrogation</p>
                   </div>
                 </div>
               </div>
