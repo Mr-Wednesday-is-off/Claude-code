@@ -88,6 +88,67 @@ const Accordion = ({ title, children, isImportant = false }) => {
   );
 };
 
+// Breadcrumb Navigation
+const tabLabels = {
+  vehicle: "Vehicle Stop",
+  street: "Street Interaction",
+  home: "Home Encounter",
+  ice: "ICE Encounter",
+  rights: "Rights Overview"
+};
+
+const stepLabels = {
+  initial: null,
+  driver: "Driver",
+  passenger: "Passenger"
+};
+
+const Breadcrumb = ({ activeTab, currentStep, onNavigate }) => {
+  const crumbs = [
+    { label: "Home", action: () => onNavigate(activeTab, "initial") },
+  ];
+
+  crumbs.push({
+    label: tabLabels[activeTab] || activeTab,
+    action: () => onNavigate(activeTab, "initial"),
+  });
+
+  const step = currentStep[activeTab];
+  if (step && step !== "initial" && stepLabels[step]) {
+    crumbs.push({
+      label: stepLabels[step],
+      action: null,
+    });
+  }
+
+  // On mobile, truncate if too many items
+  const displayCrumbs = crumbs.length > 3
+    ? [crumbs[0], { label: "...", action: null }, crumbs[crumbs.length - 1]]
+    : crumbs;
+
+  return (
+    <nav className="flex items-center gap-1.5 text-sm text-text-muted py-2 px-4 sm:px-6 overflow-x-auto scrollbar-hide">
+      {displayCrumbs.map((crumb, i) => (
+        <React.Fragment key={i}>
+          {i > 0 && <span className="text-text-muted/50">→</span>}
+          {crumb.action && i < displayCrumbs.length - 1 ? (
+            <button
+              onClick={crumb.action}
+              className="hover:text-accent-gold transition-colors whitespace-nowrap"
+            >
+              {crumb.label}
+            </button>
+          ) : (
+            <span className={`whitespace-nowrap ${i === displayCrumbs.length - 1 ? 'text-text-secondary font-medium' : ''}`}>
+              {crumb.label}
+            </span>
+          )}
+        </React.Fragment>
+      ))}
+    </nav>
+  );
+};
+
 // Bottom Navigation for Mobile
 const BottomNav = ({ activeTab, onTabChange }) => {
   const tabs = [
@@ -867,7 +928,17 @@ const LawEnforcementInteraction = () => {
           </div>
         </CardHeader>
 
-        <CardContent className="pt-6 px-4 sm:px-6">
+        <Breadcrumb
+          activeTab={activeTab}
+          currentStep={currentStep}
+          onNavigate={(tab, step) => {
+            setNavDirection(-1);
+            setActiveTab(tab);
+            setCurrentStep(prev => ({ ...prev, [tab]: step }));
+          }}
+        />
+
+        <CardContent className="pt-4 px-4 sm:px-6">
           <div className="space-y-6">
             <ProgressBar completed={completedSections.size} total={10} />
             <SearchBar query={searchQuery} setQuery={setSearchQuery} onSearch={() => {}} />
