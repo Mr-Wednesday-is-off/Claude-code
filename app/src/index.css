@@ -1,39 +1,77 @@
 @import "tailwindcss";
 
+/* Dark mode (default) CSS custom properties */
+:root {
+  --app-background: #0f172a;
+  --app-foreground: #ffffff;
+  --app-card: #1e293b;
+  --app-card-foreground: #ffffff;
+  --app-surface: #1e293b;
+  --app-surface-hover: #263348;
+  --app-text-primary: #ffffff;
+  --app-text-secondary: #e2e8f0;
+  --app-text-muted: #94a3b8;
+  --app-border: #334155;
+  --app-border-subtle: #334155;
+  --app-muted: #334155;
+  --app-muted-foreground: #94a3b8;
+  --app-accent-gold: #f59e0b;
+  --app-accent-gold-hover: #d97706;
+  --app-input: #334155;
+}
+
+/* Light mode override */
+[data-theme="light"] {
+  --app-background: #ffffff;
+  --app-foreground: #0f172a;
+  --app-card: #f8fafc;
+  --app-card-foreground: #0f172a;
+  --app-surface: #f8fafc;
+  --app-surface-hover: #f1f5f9;
+  --app-text-primary: #0f172a;
+  --app-text-secondary: #334155;
+  --app-text-muted: #64748b;
+  --app-border: #e2e8f0;
+  --app-border-subtle: #e2e8f0;
+  --app-muted: #f1f5f9;
+  --app-muted-foreground: #64748b;
+  --app-accent-gold: #f59e0b;
+  --app-accent-gold-hover: #d97706;
+  --app-input: #e2e8f0;
+}
+
 @theme {
   --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
 
-  /* Dark mode (default) palette */
-  --color-background: #0f172a;
-  --color-foreground: #ffffff;
-  --color-card: #1e293b;
-  --color-card-foreground: #ffffff;
-  --color-popover: #1e293b;
-  --color-popover-foreground: #ffffff;
-  --color-primary: #f59e0b;
+  --color-background: var(--app-background);
+  --color-foreground: var(--app-foreground);
+  --color-card: var(--app-card);
+  --color-card-foreground: var(--app-card-foreground);
+  --color-popover: var(--app-surface);
+  --color-popover-foreground: var(--app-foreground);
+  --color-primary: var(--app-accent-gold);
   --color-primary-foreground: #0f172a;
-  --color-secondary: #1e293b;
-  --color-secondary-foreground: #e2e8f0;
-  --color-muted: #334155;
-  --color-muted-foreground: #94a3b8;
-  --color-accent: #f59e0b;
+  --color-secondary: var(--app-surface);
+  --color-secondary-foreground: var(--app-text-secondary);
+  --color-muted: var(--app-muted);
+  --color-muted-foreground: var(--app-muted-foreground);
+  --color-accent: var(--app-accent-gold);
   --color-accent-foreground: #0f172a;
   --color-destructive: #ef4444;
   --color-destructive-foreground: #fafafa;
-  --color-border: #334155;
-  --color-input: #334155;
-  --color-ring: #f59e0b;
+  --color-border: var(--app-border);
+  --color-input: var(--app-input);
+  --color-ring: var(--app-accent-gold);
   --radius: 0.75rem;
 
-  /* Semantic colors */
-  --color-surface: #1e293b;
-  --color-surface-hover: #263348;
-  --color-text-primary: #ffffff;
-  --color-text-secondary: #e2e8f0;
-  --color-text-muted: #94a3b8;
-  --color-accent-gold: #f59e0b;
-  --color-accent-gold-hover: #d97706;
-  --color-border-subtle: #334155;
+  --color-surface: var(--app-surface);
+  --color-surface-hover: var(--app-surface-hover);
+  --color-text-primary: var(--app-text-primary);
+  --color-text-secondary: var(--app-text-secondary);
+  --color-text-muted: var(--app-text-muted);
+  --color-accent-gold: var(--app-accent-gold);
+  --color-accent-gold-hover: var(--app-accent-gold-hover);
+  --color-border-subtle: var(--app-border-subtle);
 }
 
 @layer base {
@@ -44,11 +82,13 @@
     font-family: 'Inter', system-ui, -apple-system, sans-serif;
   }
   body {
-    @apply bg-background text-foreground;
+    background-color: var(--app-background);
+    color: var(--app-foreground);
     margin: 0;
     line-height: 1.5;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    transition: background-color 0.2s, color 0.2s;
   }
   h1, h2, h3, h4, h5, h6 {
     line-height: 1.3;
