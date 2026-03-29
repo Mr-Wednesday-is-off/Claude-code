@@ -1,4 +1,5 @@
-import React, { useState, useCallback, useEffect } from "react";
+import React, { useState, useCallback, useEffect, useRef } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
@@ -157,6 +158,8 @@ const LawEnforcementInteraction = () => {
 
   const toggleTheme = () => setTheme(prev => prev === 'dark' ? 'light' : 'dark');
 
+  const [navDirection, setNavDirection] = useState(1); // 1 = forward, -1 = back
+
   const markSectionCompleted = useCallback((section) => {
     setCompletedSections(prev => {
       const newSet = new Set(prev);
@@ -185,6 +188,7 @@ const LawEnforcementInteraction = () => {
               <div className="grid gap-4">
                 <Button
                   onClick={() => {
+                    setNavDirection(1);
                     setCurrentStep({ ...currentStep, vehicle: "driver" });
                     markSectionCompleted("vehicle-driver");
                   }}
@@ -201,6 +205,7 @@ const LawEnforcementInteraction = () => {
                 </Button>
                 <Button
                   onClick={() => {
+                    setNavDirection(1);
                     setCurrentStep({ ...currentStep, vehicle: "passenger" });
                     markSectionCompleted("vehicle-passenger");
                   }}
@@ -224,15 +229,15 @@ const LawEnforcementInteraction = () => {
         title: "Driver Rights & Procedures",
         content: (
           <div className="space-y-6">
-            <Button 
-              onClick={() => setCurrentStep({ ...currentStep, vehicle: "initial" })}
-              variant="ghost" 
+            <Button
+              onClick={() => { setNavDirection(-1); setCurrentStep({ ...currentStep, vehicle: "initial" }); }}
+              variant="ghost"
               className="mb-4 text-text-muted hover:text-text-secondary"
             >
               <ChevronLeft className="mr-2 h-4 w-4" />
               Back to Vehicle Options
             </Button>
-            
+
             <Accordion title="🚗 If You're Stopped as a Driver" isImportant={true}>
               <div className="space-y-6">
                 <div className="grid md:grid-cols-2 gap-4">
@@ -358,9 +363,9 @@ const LawEnforcementInteraction = () => {
         title: "Passenger Rights & Procedures", 
         content: (
           <div className="space-y-6">
-            <Button 
-              onClick={() => setCurrentStep({ ...currentStep, vehicle: "initial" })}
-              variant="ghost" 
+            <Button
+              onClick={() => { setNavDirection(-1); setCurrentStep({ ...currentStep, vehicle: "initial" }); }}
+              variant="ghost"
               className="mb-4 text-text-muted hover:text-text-secondary"
             >
               <ChevronLeft className="mr-2 h-4 w-4" />
@@ -814,8 +819,21 @@ const LawEnforcementInteraction = () => {
     setCurrentStep(prev => ({ ...prev, [value]: "initial" }));
   };
 
+  const contentKey = `${activeTab}-${currentStep[activeTab]}`;
+
+  const slideVariants = {
+    enter: (direction) => ({ x: direction > 0 ? 50 : -50, opacity: 0 }),
+    center: { x: 0, opacity: 1 },
+    exit: (direction) => ({ x: direction > 0 ? -50 : 50, opacity: 0 }),
+  };
+
   return (
-    <div className="min-h-screen bg-background pb-20 sm:pb-0">
+    <motion.div
+      className="min-h-screen bg-background pb-20 sm:pb-0"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.3 }}
+    >
       <Card className="w-full max-w-[640px] mx-auto bg-background border-0 shadow-none">
         <CardHeader className="bg-surface rounded-t-xl px-4 sm:px-6 py-6">
           <div className="flex items-center justify-between">
@@ -871,28 +889,30 @@ const LawEnforcementInteraction = () => {
                   ))}
                 </TabsList>
                 
-                <TabsContent value="vehicle" className="pt-4">
-                  {scenarios.vehicle?.[currentStep.vehicle]?.content || <div className="text-center py-12 text-text-muted">Content loading...</div>}
-                </TabsContent>
-                <TabsContent value="street" className="pt-4">
-                  {scenarios.street?.[currentStep.street]?.content || <div className="text-center py-12 text-text-muted">Content loading...</div>}
-                </TabsContent>
-                <TabsContent value="home" className="pt-4">
-                  {scenarios.home?.[currentStep.home]?.content || <div className="text-center py-12 text-text-muted">Content loading...</div>}
-                </TabsContent>
-                <TabsContent value="ice" className="pt-4">
-                  {scenarios.ice?.[currentStep.ice]?.content || <div className="text-center py-12 text-text-muted">Content loading...</div>}
-                </TabsContent>
-                <TabsContent value="rights" className="pt-4">
-                  {scenarios.rights?.[currentStep.rights]?.content || <div className="text-center py-12 text-text-muted">Content loading...</div>}
-                </TabsContent>
+                {["vehicle", "street", "home", "ice", "rights"].map(tab => (
+                  <TabsContent key={tab} value={tab} className="pt-4">
+                    <AnimatePresence mode="wait" custom={navDirection}>
+                      <motion.div
+                        key={`${tab}-${currentStep[tab]}`}
+                        custom={navDirection}
+                        variants={slideVariants}
+                        initial="enter"
+                        animate="center"
+                        exit="exit"
+                        transition={{ duration: 0.25, ease: "easeOut" }}
+                      >
+                        {scenarios[tab]?.[currentStep[tab]]?.content || <div className="text-center py-12 text-text-muted">Content loading...</div>}
+                      </motion.div>
+                    </AnimatePresence>
+                  </TabsContent>
+                ))}
               </Tabs>
             </div>
           </div>
         </CardContent>
       </Card>
       <BottomNav activeTab={activeTab} onTabChange={handleTabChange} />
-    </div>
+    </motion.div>
   );
 };
 

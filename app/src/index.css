@@ -95,6 +95,14 @@
   }
 }
 
+@media (hover: hover) {
+  button:not(:disabled):hover,
+  [role="button"]:not(:disabled):hover {
+    transform: scale(1.02);
+    transition: transform 0.15s ease;
+  }
+}
+
 @utility scrollbar-hide {
   -ms-overflow-style: none;
   scrollbar-width: none;
