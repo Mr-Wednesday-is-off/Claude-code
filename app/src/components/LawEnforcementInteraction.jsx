@@ -788,12 +788,12 @@ const LawEnforcementInteraction = () => {
                 setActiveTab(value);
                 setCurrentStep(prev => ({ ...prev, [value]: "initial" }));
               }} className="space-y-6">
-                <TabsList className="grid w-full grid-cols-5 bg-surface p-1 rounded-xl">
+                <TabsList className="grid w-full grid-cols-5">
                   {Object.entries(tabIcons).map(([value, Icon]) => (
                     <TabsTrigger
                       key={value}
                       value={value}
-                      className="flex items-center gap-2 py-3 rounded-lg data-[state=active]:bg-background data-[state=active]:shadow-sm"
+                      className="flex items-center gap-2 py-3"
                     >
                       <Icon className="h-4 w-4" />
                       <span className="hidden sm:inline capitalize">{value === 'ice' ? 'ICE' : value === 'rights' ? 'Rights' : value}</span>
