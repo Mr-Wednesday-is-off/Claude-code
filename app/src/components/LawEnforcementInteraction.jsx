@@ -87,6 +87,46 @@ const Accordion = ({ title, children, isImportant = false }) => {
   );
 };
 
+// Bottom Navigation for Mobile
+const BottomNav = ({ activeTab, onTabChange }) => {
+  const tabs = [
+    { id: "vehicle", label: "Vehicle", icon: (
+      <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H5c-.6 0-1.1.4-1.4.9l-1.4 2.9A3.7 3.7 0 0 0 2 12v4c0 .6.4 1 1 1h2"/><circle cx="7" cy="17" r="2"/><path d="M9 17h6"/><circle cx="17" cy="17" r="2"/></svg>
+    )},
+    { id: "street", label: "Street", icon: (
+      <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+    )},
+    { id: "home", label: "Home", icon: (
+      <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+    )},
+    { id: "ice", label: "ICE", icon: (
+      <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg>
+    )},
+    { id: "rights", label: "Rights", icon: (
+      <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+    )}
+  ];
+
+  return (
+    <nav className="fixed bottom-0 left-0 right-0 bg-surface border-t border-border-subtle sm:hidden z-50">
+      <div className="flex justify-around items-center h-16 max-w-[640px] mx-auto">
+        {tabs.map(tab => (
+          <button
+            key={tab.id}
+            onClick={() => onTabChange(tab.id)}
+            className={`flex flex-col items-center justify-center gap-1 flex-1 h-full transition-colors ${
+              activeTab === tab.id ? 'text-accent-gold' : 'text-text-muted'
+            }`}
+          >
+            {tab.icon}
+            <span className="text-xs font-medium">{tab.label}</span>
+          </button>
+        ))}
+      </div>
+    </nav>
+  );
+};
+
 // Main App Component
 const LawEnforcementInteraction = () => {
   const [activeTab, setActiveTab] = useState("vehicle");
@@ -752,9 +792,14 @@ const LawEnforcementInteraction = () => {
 
   const currentScenario = scenarios[activeTab]?.[currentStep[activeTab]];
 
+  const handleTabChange = (value) => {
+    setActiveTab(value);
+    setCurrentStep(prev => ({ ...prev, [value]: "initial" }));
+  };
+
   return (
-    <div className="min-h-screen bg-background">
-      <Card className="w-full max-w-4xl mx-auto bg-background border-0 shadow-none">
+    <div className="min-h-screen bg-background pb-20 sm:pb-0">
+      <Card className="w-full max-w-[640px] mx-auto bg-background border-0 shadow-none">
         <CardHeader className="bg-surface rounded-t-xl px-4 sm:px-6 py-6">
           <div className="flex items-center justify-between">
             <div>
@@ -784,11 +829,8 @@ const LawEnforcementInteraction = () => {
             
             <div>
               <h3 className="text-xl font-semibold mb-4 text-text-primary leading-[1.3]">Choose Your Situation</h3>
-              <Tabs value={activeTab} onValueChange={(value) => {
-                setActiveTab(value);
-                setCurrentStep(prev => ({ ...prev, [value]: "initial" }));
-              }} className="space-y-6">
-                <TabsList className="grid w-full grid-cols-5">
+              <Tabs value={activeTab} onValueChange={handleTabChange} className="space-y-6">
+                <TabsList className="hidden sm:grid w-full grid-cols-5">
                   {Object.entries(tabIcons).map(([value, Icon]) => (
                     <TabsTrigger
                       key={value}
@@ -796,7 +838,7 @@ const LawEnforcementInteraction = () => {
                       className="flex items-center gap-2 py-3"
                     >
                       <Icon className="h-4 w-4" />
-                      <span className="hidden sm:inline capitalize">{value === 'ice' ? 'ICE' : value === 'rights' ? 'Rights' : value}</span>
+                      <span className="capitalize">{value === 'ice' ? 'ICE' : value === 'rights' ? 'Rights' : value}</span>
                     </TabsTrigger>
                   ))}
                 </TabsList>
@@ -821,6 +863,7 @@ const LawEnforcementInteraction = () => {
           </div>
         </CardContent>
       </Card>
+      <BottomNav activeTab={activeTab} onTabChange={handleTabChange} />
     </div>
   );
 };
