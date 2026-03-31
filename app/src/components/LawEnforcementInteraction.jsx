@@ -304,8 +304,296 @@ const LawEnforcementInteraction = () => {
     exit: (direction) => ({ x: direction > 0 ? -50 : 50, opacity: 0 }),
   };
 
-  // Render section content (placeholder for now — content added in Steps 2-5)
+  // --- Vehicle Section ---
+  const renderVehicleInitial = () => (
+    <div className="space-y-6">
+      <div className="bg-blue-900/20 rounded-xl p-6">
+        <h2 className="text-2xl font-bold mb-4 text-text-primary">Are you the driver or a passenger?</h2>
+        <p className="text-text-muted mb-6">Your rights and responsibilities differ based on your role in the vehicle.</p>
+        <div className="grid gap-4">
+          <Button
+            onClick={() => {
+              navigate('/vehicle/driver');
+              markSectionCompleted("vehicle-driver");
+            }}
+            className="h-auto py-6 px-6 text-left justify-start bg-surface border border-border-subtle hover:border-accent-gold/50 text-text-primary hover:bg-surface-hover"
+            variant="outline"
+          >
+            <div className="flex items-center gap-4">
+              <Car className="h-8 w-8 text-blue-600" />
+              <div>
+                <div className="font-semibold text-lg">I'm the Driver</div>
+                <div className="text-sm text-text-muted">Learn your rights and responsibilities as the driver</div>
+              </div>
+            </div>
+          </Button>
+          <Button
+            onClick={() => {
+              navigate('/vehicle/passenger');
+              markSectionCompleted("vehicle-passenger");
+            }}
+            className="h-auto py-6 px-6 text-left justify-start bg-surface border border-border-subtle hover:border-accent-gold/50 text-text-primary hover:bg-surface-hover"
+            variant="outline"
+          >
+            <div className="flex items-center gap-4">
+              <Users className="h-8 w-8 text-green-600" />
+              <div>
+                <div className="font-semibold text-lg">I'm a Passenger</div>
+                <div className="text-sm text-text-muted">Understand your specific rights as a passenger</div>
+              </div>
+            </div>
+          </Button>
+        </div>
+      </div>
+    </div>
+  );
+
+  const renderVehicleDriver = () => (
+    <div className="space-y-6">
+      <Button
+        onClick={() => navigate('/vehicle')}
+        variant="ghost"
+        className="mb-4 text-text-muted hover:text-text-secondary"
+      >
+        <ChevronLeft className="mr-2 h-4 w-4" />
+        Back to Vehicle Options
+      </Button>
+
+      <Accordion title="🚗 If You're Stopped as a Driver" isImportant={true}>
+        <div className="space-y-6">
+          <div className="grid md:grid-cols-2 gap-4">
+            <div className="bg-red-900/20 p-4 rounded-lg border-l-4 border-red-400">
+              <h4 className="font-bold text-red-300 mb-2">Immediate Actions</h4>
+              <ul className="space-y-1 text-sm">
+                <li>• Pull over safely and turn off engine</li>
+                <li>• Turn on interior light if dark</li>
+                <li>• Keep hands visible on steering wheel</li>
+                <li>• Stay calm and move slowly</li>
+                <li>• Begin recording if possible</li>
+              </ul>
+            </div>
+            <div className="bg-blue-900/20 p-4 rounded-lg border-l-4 border-blue-400">
+              <h4 className="font-bold text-blue-300 mb-2">Required Documents</h4>
+              <ul className="space-y-1 text-sm">
+                <li>• Driver's license</li>
+                <li>• Vehicle registration</li>
+                <li>• Proof of insurance</li>
+                <li className="font-semibold">• Nothing else is required</li>
+              </ul>
+            </div>
+          </div>
+
+          <div className="bg-purple-900/20 p-4 rounded-lg">
+            <h4 className="font-bold text-purple-300 mb-3">Your Constitutional Rights During the Stop</h4>
+            <div className="grid md:grid-cols-2 gap-4 text-sm">
+              <div>
+                <h5 className="font-semibold mb-2">You Have the Right To:</h5>
+                <ul className="space-y-2">
+                  <li>• Remain silent <span className="text-xs">(5th Amendment)</span></li>
+                  <li>• Refuse searches <span className="text-xs">(4th Amendment)</span></li>
+                  <li>• Record the interaction <span className="text-xs">(1st Amendment)</span></li>
+                  <li>• Ask if you're free to go</li>
+                  <li>• Request a supervisor</li>
+                  <li>• Get badge numbers & names</li>
+                </ul>
+              </div>
+              <div>
+                <h5 className="font-semibold mb-2">NOT Recommended:</h5>
+                <ul className="space-y-2 text-red-400">
+                  <li>✗ Answering investigative questions (can only hurt, never help you)</li>
+                  <li>✗ Trying to "explain" or "clear things up"</li>
+                  <li>✗ Consenting to any searches</li>
+                  <li>✗ Admitting to anything</li>
+                  <li>✗ Arguing or debating</li>
+                  <li>✗ Making sudden movements</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <div className="bg-amber-900/20 p-4 rounded-lg border-l-4 border-amber-400">
+            <h4 className="font-bold text-amber-300 mb-2">If Asked to Exit Vehicle</h4>
+            <ul className="space-y-1 text-sm">
+              <li className="font-semibold">• You must comply with the order to exit</li>
+              <li>• Close and lock your door behind you</li>
+              <li>• You are NOT required to allow re-entry to the vehicle</li>
+              <li>• State: "I do not consent to any searches of my vehicle"</li>
+              <li>• Keep your keys with you</li>
+            </ul>
+          </div>
+        </div>
+      </Accordion>
+
+      <Accordion title="⚖️ What to Say - Constitutional Invocations" isImportant={true}>
+        <div className="space-y-4">
+          <div className="bg-red-900/20 p-4 rounded-lg border-l-4 border-red-400">
+            <h4 className="font-bold text-red-300 mb-2">⚠️ Critical Legal Reality</h4>
+            <p className="text-sm font-semibold mb-2">Your statements to police can ONLY hurt you, never help you:</p>
+            <ul className="space-y-1 text-sm">
+              <li>• Anything you say CAN be used against you in court</li>
+              <li>• Anything you say in your defense CANNOT be used to help you (it's hearsay)</li>
+              <li>• There is NO legal benefit to explaining yourself to police</li>
+              <li>• Even truthful statements can be misremembered or twisted</li>
+            </ul>
+          </div>
+
+          <div className="bg-indigo-900/20 p-4 rounded-lg">
+            <h4 className="font-bold text-indigo-300 mb-2">Proper Legal Invocations</h4>
+            <ul className="space-y-2 text-sm italic">
+              <li>"I invoke and do not waive my 5th Amendment right to remain silent"</li>
+              <li>"I invoke and do not waive my 4th Amendment right against unreasonable searches"</li>
+              <li>"I do not consent to any searches of my person, vehicle, or belongings"</li>
+              <li>"Am I being detained or am I free to go?"</li>
+              <li>"I will not answer questions without an attorney present"</li>
+              <li>"I am exercising my 1st Amendment right to record this interaction"</li>
+            </ul>
+          </div>
+        </div>
+      </Accordion>
+
+      <Accordion title="📱 Recording & Documentation Rights">
+        <div className="space-y-4">
+          <div className="bg-green-900/20 p-4 rounded-lg">
+            <h4 className="font-bold text-green-300 mb-2">Recording is Your Right</h4>
+            <ul className="space-y-1 text-sm">
+              <li className="font-semibold">• Recording police interactions is protected by the 1st Amendment</li>
+              <li>• Use dash cam or phone mount (hands-free)</li>
+              <li>• You don't need to inform officers you're recording</li>
+              <li>• Officers cannot legally order you to stop recording</li>
+              <li>• Never unlock phone without a warrant</li>
+              <li>• Upload/backup recordings immediately</li>
+            </ul>
+          </div>
+          <div className="bg-yellow-900/20 p-4 rounded-lg">
+            <h4 className="font-bold text-yellow-300 mb-2">Document Everything</h4>
+            <ul className="space-y-1 text-sm">
+              <li>• Officer names and badge numbers</li>
+              <li>• Patrol car numbers</li>
+              <li>• Time, date, and exact location</li>
+              <li>• Reason given for stop</li>
+              <li>• Any threats or promises made</li>
+              <li>• Witness contact information</li>
+            </ul>
+          </div>
+        </div>
+      </Accordion>
+    </div>
+  );
+
+  const renderVehiclePassenger = () => (
+    <div className="space-y-6">
+      <Button
+        onClick={() => navigate('/vehicle')}
+        variant="ghost"
+        className="mb-4 text-text-muted hover:text-text-secondary"
+      >
+        <ChevronLeft className="mr-2 h-4 w-4" />
+        Back to Vehicle Options
+      </Button>
+
+      <Accordion title="👥 Passenger Constitutional Rights" isImportant={true}>
+        <div className="space-y-6">
+          <div className="bg-blue-900/20 p-4 rounded-lg border-l-4 border-blue-400">
+            <h4 className="font-bold text-blue-300 mb-3">Key Passenger Rights</h4>
+            <div className="space-y-2 text-sm">
+              <div className="flex items-start gap-2">
+                <CheckCircle className="h-4 w-4 text-green-500 mt-0.5 flex-shrink-0" />
+                <span>NO ID required unless suspected of specific crime <span className="text-xs">(4th Amendment)</span></span>
+              </div>
+              <div className="flex items-start gap-2">
+                <CheckCircle className="h-4 w-4 text-green-500 mt-0.5 flex-shrink-0" />
+                <span>Right to remain silent <span className="text-xs">(5th Amendment)</span></span>
+              </div>
+              <div className="flex items-start gap-2">
+                <CheckCircle className="h-4 w-4 text-green-500 mt-0.5 flex-shrink-0" />
+                <span>Can refuse searches even if driver consents <span className="text-xs">(4th Amendment)</span></span>
+              </div>
+              <div className="flex items-start gap-2">
+                <CheckCircle className="h-4 w-4 text-green-500 mt-0.5 flex-shrink-0" />
+                <span>Right to record the interaction <span className="text-xs">(1st Amendment)</span></span>
+              </div>
+              <div className="flex items-start gap-2">
+                <CheckCircle className="h-4 w-4 text-green-500 mt-0.5 flex-shrink-0" />
+                <span>Can leave on foot unless detained <span className="text-xs">(4th Amendment)</span></span>
+              </div>
+            </div>
+          </div>
+
+          <div className="grid md:grid-cols-2 gap-4">
+            <div className="bg-purple-900/20 p-4 rounded-lg">
+              <h4 className="font-bold text-purple-300 mb-2">Proper Invocations</h4>
+              <ul className="space-y-1 text-sm italic">
+                <li>"I invoke my 5th Amendment right to remain silent"</li>
+                <li>"I do not consent to any searches"</li>
+                <li>"Am I free to leave?"</li>
+                <li>"What specific crime am I suspected of?"</li>
+                <li>"I need to speak with an attorney"</li>
+              </ul>
+            </div>
+            <div className="bg-orange-900/20 p-4 rounded-lg">
+              <h4 className="font-bold text-orange-300 mb-2">If Ordered to Exit</h4>
+              <ul className="space-y-1 text-sm">
+                <li className="font-semibold">• You must comply with the order</li>
+                <li>• Take ALL belongings with you</li>
+                <li>• Close and lock door behind you</li>
+                <li>• Step away from the vehicle</li>
+                <li>• State: "I do not consent to any searches"</li>
+                <li>• Ask: "Am I being detained or am I free to leave?"</li>
+                <li>• Record if possible</li>
+              </ul>
+            </div>
+          </div>
+
+          <div className="bg-yellow-900/20 p-4 rounded-lg">
+            <h4 className="font-bold text-yellow-300 mb-2">🚶 Passenger-Specific Rights</h4>
+            <ul className="space-y-2 text-sm">
+              <li>• Unless detained for a specific crime, passengers can usually leave on foot</li>
+              <li>• You are NOT responsible for the driver's violations</li>
+              <li>• Your belongings are separate - driver cannot consent to search YOUR bag</li>
+              <li>• If police find something illegal that's not yours, do NOT claim ownership</li>
+              <li>• You can refuse to answer questions about the driver</li>
+            </ul>
+          </div>
+
+          <div className="bg-red-900/20 p-4 rounded-lg">
+            <h4 className="font-bold text-red-300 mb-2">⚠️ Important: Not Recommended</h4>
+            <ul className="space-y-1 text-sm">
+              <li>✗ Answering questions about where you're going/coming from</li>
+              <li>✗ Providing ID unless legally required</li>
+              <li>✗ Consenting to any searches</li>
+              <li>✗ Making statements about the driver or situation</li>
+              <li>✗ Reaching for anything without announcing it first</li>
+              <li>✗ Arguing or interfering with the driver's interaction</li>
+            </ul>
+          </div>
+        </div>
+      </Accordion>
+
+      <Accordion title="📱 Recording as a Passenger">
+        <div className="bg-green-900/20 p-4 rounded-lg">
+          <h4 className="font-bold text-green-300 mb-2">Your Right to Record:</h4>
+          <ul className="space-y-1 text-sm">
+            <li>• You have a 1st Amendment right to record</li>
+            <li>• Record quietly without interfering</li>
+            <li>• You don't need to announce you're recording</li>
+            <li>• Keep phone visible to avoid "reaching" concerns</li>
+            <li>• Upload/stream immediately if possible</li>
+          </ul>
+        </div>
+      </Accordion>
+    </div>
+  );
+
+  // Render section content
   const renderSectionContent = () => {
+    // Vehicle section
+    if (section === 'vehicle') {
+      if (currentStep === 'driver') return renderVehicleDriver();
+      if (currentStep === 'passenger') return renderVehiclePassenger();
+      return renderVehicleInitial();
+    }
+
+    // Placeholder for sections added in Steps 3-5
     return (
       <div className="text-center py-12 text-text-muted">
         <p className="text-lg font-medium text-text-secondary">
