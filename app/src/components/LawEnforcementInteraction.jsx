@@ -584,6 +584,79 @@ const LawEnforcementInteraction = () => {
     </div>
   );
 
+  // --- Street Section ---
+  const renderStreetInitial = () => (
+    <div className="space-y-6">
+      <div className="bg-green-900/20 rounded-xl p-6">
+        <h2 className="text-2xl font-bold mb-4 text-text-primary">Street Stop Rights in New York</h2>
+        <div className="bg-surface rounded-lg p-4 border-l-4 border-green-400">
+          <h3 className="font-bold text-green-300 mb-2">🔹 New York is NOT a "Stop and Identify" State</h3>
+          <p className="text-sm mb-4 text-text-muted">You are not required to show ID just because an officer asks. They need reasonable suspicion of a crime.</p>
+          <div className="space-y-2 text-text-secondary">
+            <div>✓ "Am I free to go?" <span className="text-xs">(4th Amendment - freedom from detention)</span></div>
+            <div>✓ "I invoke my 5th Amendment right to remain silent"</div>
+            <div>✓ "What crime am I suspected of?"</div>
+            <div>✓ "I am exercising my 1st Amendment right to record"</div>
+          </div>
+        </div>
+      </div>
+
+      <Accordion title="⚖️ Constitutional Rights on the Street" isImportant={true}>
+        <div className="space-y-3">
+          <div className="bg-purple-900/20 p-4 rounded-lg">
+            <h4 className="font-bold text-purple-300 mb-2">Your Rights During Street Stops</h4>
+            <ul className="space-y-2 text-sm">
+              <li>• <strong>4th Amendment:</strong> Protection from unreasonable detention - you cannot be detained without reasonable suspicion</li>
+              <li>• <strong>5th Amendment:</strong> You don't have to answer any questions</li>
+              <li>• <strong>1st Amendment:</strong> Right to record police in public spaces</li>
+              <li>• You can walk away unless told you're being detained</li>
+              <li>• You can refuse consent to searches</li>
+            </ul>
+          </div>
+
+          <div className="bg-red-900/20 p-4 rounded-lg">
+            <h4 className="font-bold text-red-300 mb-2">⚠️ Remember: Explanations Can't Help You</h4>
+            <p className="text-sm">
+              Your explanations to police are inadmissible hearsay if you try to use them in your defense,
+              but CAN be used against you as evidence. There's no legal benefit to explaining yourself on the street.
+            </p>
+          </div>
+        </div>
+      </Accordion>
+
+      <Accordion title="📱 Recording Your Interaction" isImportant={true}>
+        <div className="space-y-3">
+          <div className="bg-blue-900/20 p-4 rounded-lg">
+            <h4 className="font-bold text-blue-300 mb-2">Recording is Strongly Recommended</h4>
+            <ul className="space-y-1 text-sm">
+              <li className="font-semibold">• Recording police is a 1st Amendment protected activity</li>
+              <li>• You can record officers performing duties in public</li>
+              <li>• Keep a safe, non-interfering distance</li>
+              <li>• You don't have to stop recording if asked</li>
+              <li>• Officers cannot legally delete your recordings</li>
+              <li>• Immediately backup/stream recordings to cloud</li>
+            </ul>
+          </div>
+        </div>
+      </Accordion>
+
+      <Accordion title="🛑 Terry Stops and Your Rights">
+        <div className="space-y-3">
+          <div className="bg-yellow-900/20 p-4 rounded-lg">
+            <h4 className="font-bold text-yellow-300 mb-2">Understanding Terry Stops</h4>
+            <ul className="space-y-1 text-sm">
+              <li>• Police need "reasonable suspicion" to detain you</li>
+              <li>• Pat-downs are only for weapons, not general searches</li>
+              <li>• You can refuse consent to searches beyond pat-down</li>
+              <li>• Ask: "Am I being detained or am I free to go?"</li>
+              <li>• If free to go, you can leave immediately</li>
+            </ul>
+          </div>
+        </div>
+      </Accordion>
+    </div>
+  );
+
   // Render section content
   const renderSectionContent = () => {
     // Vehicle section
@@ -593,15 +666,15 @@ const LawEnforcementInteraction = () => {
       return renderVehicleInitial();
     }
 
-    // Placeholder for sections added in Steps 3-5
+    // Street section
+    if (section === 'street') return renderStreetInitial();
+
+    // Placeholder for sections added in Steps 4-5
     return (
       <div className="text-center py-12 text-text-muted">
         <p className="text-lg font-medium text-text-secondary">
           {tabLabels[section] || section}
         </p>
-        {currentStep !== 'initial' && (
-          <p className="text-sm mt-1">Step: {currentStep}</p>
-        )}
         <p className="text-sm mt-4">Content will be added in subsequent steps.</p>
       </div>
     );
