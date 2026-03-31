@@ -733,6 +733,181 @@ const LawEnforcementInteraction = () => {
     </div>
   );
 
+  // --- ICE Section ---
+  const renderIceInitial = () => (
+    <div className="space-y-6">
+      <div className="bg-purple-900/20 rounded-xl p-6">
+        <h2 className="text-2xl font-bold mb-4 text-text-primary">ICE Encounters</h2>
+        <div className="bg-surface rounded-lg p-4 border-l-4 border-purple-400">
+          <h3 className="font-bold text-purple-300 mb-2">⚖️ Constitutional Rights Apply to Everyone</h3>
+          <p className="text-sm mb-4 text-text-muted">Regardless of immigration status, the Constitution protects you.</p>
+          <div className="space-y-2 text-text-secondary">
+            <div>✓ 5th Amendment right to remain silent</div>
+            <div>✓ 4th Amendment right against unreasonable searches</div>
+            <div>✓ 6th Amendment right to an attorney</div>
+            <div>✓ Do not sign anything without an attorney</div>
+            <div>✓ Right to refuse entry without judicial warrant</div>
+          </div>
+        </div>
+      </div>
+
+      <Accordion title="📋 If ICE Comes to Your Home" isImportant={true}>
+        <div className="bg-blue-900/20 p-4 rounded-lg">
+          <h4 className="font-bold text-blue-300 mb-2">Critical Steps:</h4>
+          <ul className="space-y-2 text-sm">
+            <li className="font-semibold">• DO NOT open the door</li>
+            <li>• Ask: "Do you have a warrant signed by a judge?"</li>
+            <li>• <strong>Administrative warrants (Form I-200, I-205) are NOT sufficient for entry</strong></li>
+            <li>• Only a judicial warrant (signed by a judge) allows entry</li>
+            <li>• Say: "I do not consent to entry"</li>
+            <li>• Say: "I invoke my right to remain silent"</li>
+            <li>• Have emergency contacts and attorney info ready</li>
+            <li>• Document everything, record if possible</li>
+          </ul>
+        </div>
+      </Accordion>
+
+      <Accordion title="⚖️ Know Your Rights Statements">
+        <div className="bg-purple-900/20 p-4 rounded-lg">
+          <h4 className="font-bold text-purple-300 mb-2">What to Say:</h4>
+          <ul className="space-y-1 text-sm italic">
+            <li>"I invoke my 5th Amendment right to remain silent"</li>
+            <li>"I do not consent to any entry or searches"</li>
+            <li>"I will not sign anything without an attorney"</li>
+            <li>"I am exercising my right to an attorney"</li>
+            <li>"Show me a warrant signed by a federal judge"</li>
+          </ul>
+        </div>
+      </Accordion>
+    </div>
+  );
+
+  // --- Rights Section ---
+  const renderRightsInitial = () => (
+    <div className="space-y-6">
+      <div className="bg-indigo-900/20 rounded-xl p-6">
+        <h2 className="text-2xl font-bold mb-4 text-text-primary">Constitutional Rights During Law Enforcement Interactions</h2>
+        <div className="bg-surface rounded-lg p-4 border-l-4 border-indigo-400">
+          <h3 className="font-bold text-indigo-300 mb-2">📜 Key Amendments in Police Encounters</h3>
+          <div className="space-y-3 text-sm text-text-secondary">
+            <div>
+              <strong>1st Amendment:</strong> Right to record police, freedom of speech, assembly
+              <p className="text-xs mt-1 text-text-muted">• You can record any police interaction in public spaces</p>
+            </div>
+            <div>
+              <strong>4th Amendment:</strong> Protection from unreasonable searches and seizures
+              <p className="text-xs mt-1 text-text-muted">• Requires warrant or probable cause for searches</p>
+              <p className="text-xs text-text-muted">• Protects against unlawful detention</p>
+            </div>
+            <div>
+              <strong>5th Amendment:</strong> Right to remain silent, protection against self-incrimination
+              <p className="text-xs mt-1 text-text-muted">• You cannot be forced to answer questions</p>
+              <p className="text-xs text-text-muted">• Must be clearly invoked to be effective</p>
+            </div>
+            <div>
+              <strong>6th Amendment:</strong> Right to an attorney
+              <p className="text-xs mt-1 text-text-muted">• Applies during custodial interrogation</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <Accordion title="⚡ Critical Phrases for Any Police Encounter" isImportant={true}>
+        <div className="bg-purple-900/20 p-4 rounded-lg">
+          <h4 className="font-bold text-purple-300 mb-2">Say These Clearly and Calmly:</h4>
+          <ul className="space-y-2 text-sm italic">
+            <li>"I invoke and do not waive my 5th Amendment right to remain silent"</li>
+            <li>"I invoke and do not waive my 4th Amendment rights"</li>
+            <li>"I do not consent to any searches"</li>
+            <li>"Am I free to leave?"</li>
+            <li>"I will not answer questions without an attorney present"</li>
+            <li>"I am exercising my 1st Amendment right to record"</li>
+            <li>"May I have your name and badge number?"</li>
+            <li>"I would like to speak with a supervisor"</li>
+          </ul>
+        </div>
+      </Accordion>
+
+      <Accordion title="⚠️ Why You Should NEVER Explain Yourself" isImportant={true}>
+        <div className="bg-red-900/20 p-4 rounded-lg">
+          <h4 className="font-bold text-red-300 mb-2">The Legal Asymmetry - Statements Can Only Hurt You:</h4>
+          <ul className="space-y-2 text-sm">
+            <li className="font-semibold">• Your statements CAN be used AGAINST you in court</li>
+            <li className="font-semibold">• Your statements CANNOT be used to HELP you (they're hearsay)</li>
+            <li>• Even truthful explanations can be twisted or misremembered</li>
+            <li>• "Clearing things up" with police has no legal benefit</li>
+            <li>• Innocent explanations can accidentally provide probable cause</li>
+            <li>• Your defense belongs in court with your attorney, not on the street</li>
+          </ul>
+          <p className="text-xs mt-3 font-semibold bg-red-900/30 p-2 rounded">
+            REMEMBER: There is literally NO legal advantage to explaining yourself to police. Save your defense for court where it can actually help you.
+          </p>
+        </div>
+      </Accordion>
+
+      <Accordion title="🚫 What NOT to Do (Protecting Your Rights)">
+        <div className="bg-red-900/20 p-4 rounded-lg">
+          <h4 className="font-bold text-red-300 mb-2">Never Recommended:</h4>
+          <ul className="space-y-1 text-sm">
+            <li>✗ Answering questions during an investigation</li>
+            <li>✗ Trying to "explain your side" (it's hearsay and can't help you in court)</li>
+            <li>✗ Consenting to any searches</li>
+            <li>✗ Providing information beyond ID when required</li>
+            <li>✗ Making statements about where you've been or are going</li>
+            <li>✗ Trying to talk your way out of a situation</li>
+            <li>✗ Physically resisting (even unlawful arrests)</li>
+            <li>✗ Arguing law with officers on scene</li>
+            <li>✗ Signing anything without reading and understanding</li>
+          </ul>
+          <p className="text-xs mt-3 font-semibold">Remember: Anything you say can and will be used against you, but CANNOT be used to help you (it's hearsay)</p>
+        </div>
+      </Accordion>
+
+      <Accordion title="📱 Always Document Everything">
+        <div className="bg-green-900/20 p-4 rounded-lg">
+          <h4 className="font-bold text-green-300 mb-2">Recording and Documentation Rights:</h4>
+          <ul className="space-y-1 text-sm">
+            <li>• Recording police is a 1st Amendment protected activity</li>
+            <li>• Get badge numbers, names, patrol car numbers</li>
+            <li>• Note exact time, date, location</li>
+            <li>• Get witness contact information</li>
+            <li>• Save/backup recordings immediately</li>
+            <li>• Write down everything while memory is fresh</li>
+            <li>• Take photos of any injuries or damage</li>
+          </ul>
+        </div>
+      </Accordion>
+
+      <Accordion title="⚖️ After the Encounter">
+        <div className="bg-yellow-900/20 p-4 rounded-lg">
+          <h4 className="font-bold text-yellow-300 mb-2">Protecting Your Rights After:</h4>
+          <ul className="space-y-1 text-sm">
+            <li>• File complaints for rights violations</li>
+            <li>• Contact civil rights attorneys</li>
+            <li>• Preserve all evidence and recordings</li>
+            <li>• Get medical attention if needed (document injuries)</li>
+            <li>• Don't post on social media until consulting attorney</li>
+            <li>• Request body cam footage (time limits apply)</li>
+          </ul>
+        </div>
+      </Accordion>
+
+      <div className="mt-6 p-4 bg-surface rounded-xl border border-border-subtle">
+        <h4 className="font-bold text-text-secondary mb-2 flex items-center gap-2">
+          <Scale className="h-5 w-5" />
+          Important Legal Notice
+        </h4>
+        <p className="text-xs text-text-muted">
+          This app provides general information about legal rights in the United States. It is not legal advice,
+          and no attorney-client relationship is created. Laws may vary by state and jurisdiction. Constitutional
+          rights described here are based on federal law, but state and local laws may provide additional protections
+          or requirements. For legal advice specific to your situation, consult a licensed attorney in your jurisdiction.
+          If you are arrested or charged with a crime, seek legal counsel immediately.
+        </p>
+      </div>
+    </div>
+  );
+
   // Render section content
   const renderSectionContent = () => {
     // Vehicle section
@@ -748,15 +923,13 @@ const LawEnforcementInteraction = () => {
     // Home section
     if (section === 'home') return renderHomeInitial();
 
-    // Placeholder for sections added in Step 5
-    return (
-      <div className="text-center py-12 text-text-muted">
-        <p className="text-lg font-medium text-text-secondary">
-          {tabLabels[section] || section}
-        </p>
-        <p className="text-sm mt-4">Content will be added in subsequent steps.</p>
-      </div>
-    );
+    // ICE section
+    if (section === 'ice') return renderIceInitial();
+
+    // Rights section
+    if (section === 'rights') return renderRightsInitial();
+
+    return null;
   };
 
   return (
