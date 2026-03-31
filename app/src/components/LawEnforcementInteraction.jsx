@@ -52,15 +52,37 @@ const QuickActions = ({ navigate }) => {
   );
 };
 
+// Highlight matching terms in text
+const HighlightText = ({ text, query }) => {
+  if (!query || !query.trim()) return <>{text}</>;
+  const terms = query.toLowerCase().split(/\s+/).filter(Boolean);
+  const regex = new RegExp(`(${terms.map(t => t.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('|')})`, 'gi');
+  const parts = text.split(regex);
+  return (
+    <>
+      {parts.map((part, i) =>
+        terms.some(t => part.toLowerCase() === t)
+          ? <mark key={i} className="bg-accent-gold/30 text-text-primary rounded px-0.5">{part}</mark>
+          : part
+      )}
+    </>
+  );
+};
+
 // Search Component with Results Dropdown
 const SearchBar = ({ query, setQuery, results, onResultClick }) => {
-  const [isFocused, setIsFocused] = useState(false);
+  const [dismissed, setDismissed] = useState(false);
   const containerRef = useRef(null);
+
+  // Reset dismissed state when query changes
+  useEffect(() => {
+    setDismissed(false);
+  }, [query]);
 
   useEffect(() => {
     const handleClickOutside = (e) => {
       if (containerRef.current && !containerRef.current.contains(e.target)) {
-        setIsFocused(false);
+        setDismissed(true);
       }
     };
     document.addEventListener("mousedown", handleClickOutside);
@@ -69,15 +91,15 @@ const SearchBar = ({ query, setQuery, results, onResultClick }) => {
 
   const handleKeyDown = (e) => {
     if (e.key === 'Escape') {
-      setIsFocused(false);
+      setDismissed(true);
       e.target.blur();
     } else if (e.key === 'Enter' && results.length > 0) {
       onResultClick(results[0].section);
-      setIsFocused(false);
+      setDismissed(true);
     }
   };
 
-  const showResults = isFocused && results.length > 0;
+  const showResults = !dismissed && query.trim().length > 0 && results.length > 0;
 
   return (
     <div className="relative mb-6" ref={containerRef}>
@@ -87,7 +109,7 @@ const SearchBar = ({ query, setQuery, results, onResultClick }) => {
         placeholder="Search rights, procedures, or ask a question..."
         value={query}
         onChange={(e) => setQuery(e.target.value)}
-        onFocus={() => setIsFocused(true)}
+        onFocus={() => setDismissed(false)}
         onKeyDown={handleKeyDown}
         className="w-full pl-10 pr-10 py-3 border border-border-subtle rounded-xl
                    focus:border-accent-gold focus:outline-none
@@ -96,7 +118,7 @@ const SearchBar = ({ query, setQuery, results, onResultClick }) => {
       />
       {query && (
         <button
-          onClick={() => { setQuery(""); setIsFocused(false); }}
+          onClick={() => { setQuery(""); setDismissed(true); }}
           className="absolute right-3 top-1/2 transform -translate-y-1/2 text-text-muted hover:text-text-primary transition-colors"
           aria-label="Clear search"
         >
@@ -108,13 +130,17 @@ const SearchBar = ({ query, setQuery, results, onResultClick }) => {
           {results.map((result, index) => (
             <button
               key={result.id}
-              onClick={() => { onResultClick(result.section); setIsFocused(false); }}
+              onClick={() => { onResultClick(result.section); setDismissed(true); }}
               className={`w-full text-left px-4 py-3 hover:bg-surface-hover transition-colors border-b border-border-subtle last:border-b-0 ${
                 index === 0 ? 'bg-surface-hover/50' : ''
               }`}
             >
-              <div className="font-medium text-sm text-text-primary">{result.title}</div>
-              <div className="text-xs text-text-muted mt-0.5">{result.description}</div>
+              <div className="font-medium text-sm text-text-primary">
+                <HighlightText text={result.title} query={query} />
+              </div>
+              <div className="text-xs text-text-muted mt-0.5">
+                <HighlightText text={result.description} query={query} />
+              </div>
             </button>
           ))}
         </div>
