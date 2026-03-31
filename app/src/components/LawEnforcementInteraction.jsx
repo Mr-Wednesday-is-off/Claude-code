@@ -53,33 +53,81 @@ const QuickActions = ({ navigate }) => {
 };
 
 // Search Component with Results Dropdown
-const SearchBar = ({ query, setQuery, results, onResultClick }) => (
-  <div className="relative mb-6">
-    <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-text-muted h-4 w-4" />
-    <input
-      type="text"
-      placeholder="Search rights, procedures, or ask a question..."
-      value={query}
-      onChange={(e) => setQuery(e.target.value)}
-      className="w-full pl-10 pr-4 py-3 border border-border-subtle rounded-xl
-                 focus:border-accent-gold focus:outline-none
-                 bg-surface text-text-primary
-                 placeholder-text-muted text-base"
-    />
-    {results.length > 0 && (
-      <div className="absolute top-full left-0 right-0 mt-1 bg-surface border border-border-subtle rounded-xl shadow-lg z-50 overflow-hidden">
-        {results.map((result) => (
-          <button
-            key={result.id}
-            onClick={() => onResultClick(result.section)}
-            className="w-full text-left px-4 py-3 hover:bg-surface-hover transition-colors border-b border-border-subtle last:border-b-0"
-          >
-            <div className="font-medium text-sm text-text-primary">{result.title}</div>
-            <div className="text-xs text-text-muted mt-0.5">{result.description}</div>
-          </button>
-        ))}
-      </div>
-    )}
+const SearchBar = ({ query, setQuery, results, onResultClick }) => {
+  const [isFocused, setIsFocused] = useState(false);
+  const containerRef = useRef(null);
+
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (containerRef.current && !containerRef.current.contains(e.target)) {
+        setIsFocused(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  const handleKeyDown = (e) => {
+    if (e.key === 'Escape') {
+      setIsFocused(false);
+      e.target.blur();
+    } else if (e.key === 'Enter' && results.length > 0) {
+      onResultClick(results[0].section);
+      setIsFocused(false);
+    }
+  };
+
+  const showResults = isFocused && results.length > 0;
+
+  return (
+    <div className="relative mb-6" ref={containerRef}>
+      <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-text-muted h-4 w-4" />
+      <input
+        type="text"
+        placeholder="Search rights, procedures, or ask a question..."
+        value={query}
+        onChange={(e) => setQuery(e.target.value)}
+        onFocus={() => setIsFocused(true)}
+        onKeyDown={handleKeyDown}
+        className="w-full pl-10 pr-10 py-3 border border-border-subtle rounded-xl
+                   focus:border-accent-gold focus:outline-none
+                   bg-surface text-text-primary
+                   placeholder-text-muted text-base"
+      />
+      {query && (
+        <button
+          onClick={() => { setQuery(""); setIsFocused(false); }}
+          className="absolute right-3 top-1/2 transform -translate-y-1/2 text-text-muted hover:text-text-primary transition-colors"
+          aria-label="Clear search"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      )}
+      {showResults && (
+        <div className="absolute top-full left-0 right-0 mt-1 bg-surface border border-border-subtle rounded-xl shadow-lg z-50 overflow-hidden">
+          {results.map((result, index) => (
+            <button
+              key={result.id}
+              onClick={() => { onResultClick(result.section); setIsFocused(false); }}
+              className={`w-full text-left px-4 py-3 hover:bg-surface-hover transition-colors border-b border-border-subtle last:border-b-0 ${
+                index === 0 ? 'bg-surface-hover/50' : ''
+              }`}
+            >
+              <div className="font-medium text-sm text-text-primary">{result.title}</div>
+              <div className="text-xs text-text-muted mt-0.5">{result.description}</div>
+            </button>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+};
+
+// Section Header with Share Button
+const SectionHeader = ({ children }) => (
+  <div className="flex items-start justify-between gap-3">
+    <div className="flex-1">{children}</div>
+    <ShareButton />
   </div>
 );
 
@@ -308,7 +356,9 @@ const LawEnforcementInteraction = () => {
   const renderVehicleInitial = () => (
     <div className="space-y-6">
       <div className="bg-blue-900/20 rounded-xl p-6">
-        <h2 className="text-2xl font-bold mb-4 text-text-primary">Are you the driver or a passenger?</h2>
+        <SectionHeader>
+          <h2 className="text-2xl font-bold mb-4 text-text-primary">Are you the driver or a passenger?</h2>
+        </SectionHeader>
         <p className="text-text-muted mb-6">Your rights and responsibilities differ based on your role in the vehicle.</p>
         <div className="grid gap-4">
           <Button
@@ -358,6 +408,10 @@ const LawEnforcementInteraction = () => {
         <ChevronLeft className="mr-2 h-4 w-4" />
         Back to Vehicle Options
       </Button>
+
+      <SectionHeader>
+        <h2 className="text-2xl font-bold mb-4 text-text-primary">Driver Rights & Procedures</h2>
+      </SectionHeader>
 
       <Accordion title="🚗 If You're Stopped as a Driver" isImportant={true}>
         <div className="space-y-6">
@@ -491,6 +545,10 @@ const LawEnforcementInteraction = () => {
         Back to Vehicle Options
       </Button>
 
+      <SectionHeader>
+        <h2 className="text-2xl font-bold mb-4 text-text-primary">Passenger Rights & Procedures</h2>
+      </SectionHeader>
+
       <Accordion title="👥 Passenger Constitutional Rights" isImportant={true}>
         <div className="space-y-6">
           <div className="bg-blue-900/20 p-4 rounded-lg border-l-4 border-blue-400">
@@ -588,7 +646,9 @@ const LawEnforcementInteraction = () => {
   const renderStreetInitial = () => (
     <div className="space-y-6">
       <div className="bg-green-900/20 rounded-xl p-6">
-        <h2 className="text-2xl font-bold mb-4 text-text-primary">Street Stop Rights in New York</h2>
+        <SectionHeader>
+          <h2 className="text-2xl font-bold mb-4 text-text-primary">Street Stop Rights in New York</h2>
+        </SectionHeader>
         <div className="bg-surface rounded-lg p-4 border-l-4 border-green-400">
           <h3 className="font-bold text-green-300 mb-2">🔹 New York is NOT a "Stop and Identify" State</h3>
           <p className="text-sm mb-4 text-text-muted">You are not required to show ID just because an officer asks. They need reasonable suspicion of a crime.</p>
@@ -661,7 +721,9 @@ const LawEnforcementInteraction = () => {
   const renderHomeInitial = () => (
     <div className="space-y-6">
       <div className="bg-yellow-900/20 rounded-xl p-6">
-        <h2 className="text-2xl font-bold mb-4 text-text-primary">Police at Your Home</h2>
+        <SectionHeader>
+          <h2 className="text-2xl font-bold mb-4 text-text-primary">Police at Your Home</h2>
+        </SectionHeader>
         <div className="bg-surface rounded-lg p-4 border-l-4 border-yellow-400">
           <h3 className="font-bold text-yellow-300 mb-2">🏠 Your 4th Amendment Castle Doctrine Rights</h3>
           <p className="text-sm mb-4 text-text-muted">Your home has the strongest Fourth Amendment protections against unreasonable searches.</p>
@@ -737,7 +799,9 @@ const LawEnforcementInteraction = () => {
   const renderIceInitial = () => (
     <div className="space-y-6">
       <div className="bg-purple-900/20 rounded-xl p-6">
-        <h2 className="text-2xl font-bold mb-4 text-text-primary">ICE Encounters</h2>
+        <SectionHeader>
+          <h2 className="text-2xl font-bold mb-4 text-text-primary">ICE Encounters</h2>
+        </SectionHeader>
         <div className="bg-surface rounded-lg p-4 border-l-4 border-purple-400">
           <h3 className="font-bold text-purple-300 mb-2">⚖️ Constitutional Rights Apply to Everyone</h3>
           <p className="text-sm mb-4 text-text-muted">Regardless of immigration status, the Constitution protects you.</p>
@@ -786,7 +850,9 @@ const LawEnforcementInteraction = () => {
   const renderRightsInitial = () => (
     <div className="space-y-6">
       <div className="bg-indigo-900/20 rounded-xl p-6">
-        <h2 className="text-2xl font-bold mb-4 text-text-primary">Constitutional Rights During Law Enforcement Interactions</h2>
+        <SectionHeader>
+          <h2 className="text-2xl font-bold mb-4 text-text-primary">Constitutional Rights During Law Enforcement Interactions</h2>
+        </SectionHeader>
         <div className="bg-surface rounded-lg p-4 border-l-4 border-indigo-400">
           <h3 className="font-bold text-indigo-300 mb-2">📜 Key Amendments in Police Encounters</h3>
           <div className="space-y-3 text-sm text-text-secondary">
