@@ -657,6 +657,82 @@ const LawEnforcementInteraction = () => {
     </div>
   );
 
+  // --- Home Section ---
+  const renderHomeInitial = () => (
+    <div className="space-y-6">
+      <div className="bg-yellow-900/20 rounded-xl p-6">
+        <h2 className="text-2xl font-bold mb-4 text-text-primary">Police at Your Home</h2>
+        <div className="bg-surface rounded-lg p-4 border-l-4 border-yellow-400">
+          <h3 className="font-bold text-yellow-300 mb-2">🏠 Your 4th Amendment Castle Doctrine Rights</h3>
+          <p className="text-sm mb-4 text-text-muted">Your home has the strongest Fourth Amendment protections against unreasonable searches.</p>
+          <div className="space-y-2 text-text-secondary">
+            <div>✓ You don't have to open the door</div>
+            <div>✓ You can speak through the closed door</div>
+            <div>✓ Demand to see a warrant signed by a judge</div>
+            <div>✓ Record through doorbell camera or window</div>
+            <div>✓ You can remain completely silent</div>
+          </div>
+        </div>
+      </div>
+
+      <Accordion title="⚖️ Constitutional Protections at Home" isImportant={true}>
+        <div className="bg-indigo-900/20 p-4 rounded-lg">
+          <h4 className="font-bold text-indigo-300 mb-2">What to Say Through the Door</h4>
+          <ul className="space-y-1 text-sm italic">
+            <li>"I invoke my 4th Amendment right against unreasonable searches"</li>
+            <li>"I do not consent to any entry or searches"</li>
+            <li>"Please show me a warrant signed by a judge"</li>
+            <li>"I invoke my 5th Amendment right to remain silent"</li>
+            <li>"I will not open the door without a valid warrant"</li>
+          </ul>
+        </div>
+      </Accordion>
+
+      <Accordion title="🚪 When They Can Enter Without Your Permission" isImportant={true}>
+        <div className="bg-red-900/20 p-4 rounded-lg">
+          <h4 className="font-bold text-red-300 mb-2">Limited Exceptions (Very Narrow):</h4>
+          <ul className="space-y-2 text-sm">
+            <li>• <strong>Valid Search Warrant:</strong> Must be signed by a judge, not just police</li>
+            <li>• <strong>Hot Pursuit:</strong> Chasing someone who just committed a crime</li>
+            <li>• <strong>Immediate Danger:</strong> Someone inside is in immediate peril</li>
+            <li>• <strong>Destruction of Evidence:</strong> Very limited and specific circumstances</li>
+          </ul>
+          <p className="text-xs mt-3 font-semibold">Note: "We just want to talk" or "We're investigating" are NOT valid reasons for entry</p>
+        </div>
+      </Accordion>
+
+      <Accordion title="📋 Warrant Requirements">
+        <div className="bg-blue-900/20 p-4 rounded-lg">
+          <h4 className="font-bold text-blue-300 mb-2">Valid Warrant Must Have:</h4>
+          <ul className="space-y-1 text-sm">
+            <li>• Judge's signature (not just police)</li>
+            <li>• Correct address</li>
+            <li>• Specific items or persons being sought</li>
+            <li>• Recent date (not expired)</li>
+            <li>• Ask them to slip it under the door or show through window</li>
+          </ul>
+          <div className="bg-red-900/20 p-3 rounded mt-3">
+            <p className="text-xs font-semibold text-red-300">⚠️ IMPORTANT: An arrest warrant for a person does NOT grant entry to a home unless they have reasonable belief the person is inside AND it's that person's residence</p>
+          </div>
+        </div>
+      </Accordion>
+
+      <Accordion title="⚠️ NEVER Open Your Door" isImportant={true}>
+        <div className="bg-red-900/20 p-4 rounded-lg">
+          <h4 className="font-bold text-red-300 mb-2">Why Opening the Door is Dangerous:</h4>
+          <ul className="space-y-2 text-sm">
+            <li>• Officers may put their foot in to prevent closing</li>
+            <li>• They may claim to "see" or "smell" something as probable cause</li>
+            <li>• Opening creates opportunity for forced entry</li>
+            <li>• You can be arrested if you step outside</li>
+            <li className="font-semibold">• ALWAYS speak through the closed door</li>
+            <li className="font-semibold">• Warrants can be slipped under the door if needed</li>
+          </ul>
+        </div>
+      </Accordion>
+    </div>
+  );
+
   // Render section content
   const renderSectionContent = () => {
     // Vehicle section
@@ -669,7 +745,10 @@ const LawEnforcementInteraction = () => {
     // Street section
     if (section === 'street') return renderStreetInitial();
 
-    // Placeholder for sections added in Steps 4-5
+    // Home section
+    if (section === 'home') return renderHomeInitial();
+
+    // Placeholder for sections added in Step 5
     return (
       <div className="text-center py-12 text-text-muted">
         <p className="text-lg font-medium text-text-secondary">
