@@ -457,7 +457,7 @@ const LawEnforcementInteraction = () => {
                 <li>• Turn on interior light if dark</li>
                 <li>• Keep hands visible on steering wheel</li>
                 <li>• Stay calm and move slowly</li>
-                <li>• Begin recording if possible</li>
+                <li>• Record hands-free if you can (dash cam or phone mount), don't reach for a phone</li>
               </ul>
             </div>
             <div className="bg-blue-900/20 p-4 rounded-lg border-l-4 border-blue-400">
@@ -466,8 +466,9 @@ const LawEnforcementInteraction = () => {
                 <li>• Driver's license</li>
                 <li>• Vehicle registration</li>
                 <li>• Proof of insurance</li>
-                <li className="font-semibold">• Nothing else is required</li>
+                <li className="font-semibold">• You don't have to say where you're going or coming from</li>
               </ul>
+              <p className="text-xs mt-2 text-text-muted">Tell the officer where the documents are before you reach for them.</p>
             </div>
           </div>
 
@@ -478,9 +479,9 @@ const LawEnforcementInteraction = () => {
                 <h5 className="font-semibold mb-2">You Have the Right To:</h5>
                 <ul className="space-y-2">
                   <li>• Remain silent <span className="text-xs">(5th Amendment)</span></li>
-                  <li>• Refuse searches <span className="text-xs">(4th Amendment)</span></li>
-                  <li>• Record the interaction <span className="text-xs">(1st Amendment)</span></li>
-                  <li>• Ask if you're free to go</li>
+                  <li>• Refuse consent to searches <span className="text-xs">(4th Amendment)</span></li>
+                  <li>• Record the interaction <span className="text-xs">(1st Amendment; NY Civil Rights Law §79-p)</span></li>
+                  <li>• Ask if you're free to go once the ticket or warning is done</li>
                   <li>• Request a supervisor</li>
                   <li>• Get badge numbers & names</li>
                 </ul>
@@ -488,7 +489,7 @@ const LawEnforcementInteraction = () => {
               <div>
                 <h5 className="font-semibold mb-2">NOT Recommended:</h5>
                 <ul className="space-y-2 text-red-400">
-                  <li>✗ Answering investigative questions (can only hurt, never help you)</li>
+                  <li>✗ Answering investigative questions (rarely helps, often hurts)</li>
                   <li>✗ Trying to "explain" or "clear things up"</li>
                   <li>✗ Consenting to any searches</li>
                   <li>✗ Admitting to anything</li>
@@ -504,9 +505,29 @@ const LawEnforcementInteraction = () => {
             <ul className="space-y-1 text-sm">
               <li className="font-semibold">• You must comply with the order to exit</li>
               <li>• Close and lock your door behind you</li>
-              <li>• You are NOT required to allow re-entry to the vehicle</li>
               <li>• State: "I do not consent to any searches of my vehicle"</li>
               <li>• Keep your keys with you</li>
+            </ul>
+          </div>
+
+          <div className="bg-red-900/20 p-4 rounded-lg border-l-4 border-red-400">
+            <h4 className="font-bold text-red-300 mb-2">If They Search Anyway</h4>
+            <ul className="space-y-1 text-sm">
+              <li>• If police have probable cause, they can search your car without your consent or a warrant</li>
+              <li>• Say clearly that you don't consent, then step back and let it happen. Never physically resist</li>
+              <li>• Your refusal still matters: it protects your right to challenge the search in court</li>
+              <li>• In NYC, if NYPD searches you or your vehicle, they must offer you a business card with their name, rank and shield number (unless it ends in an arrest or summons)</li>
+            </ul>
+          </div>
+
+          <div className="bg-orange-900/20 p-4 rounded-lg border-l-4 border-orange-400">
+            <h4 className="font-bold text-orange-300 mb-2">⚠️ Breath & Chemical Tests Are Different</h4>
+            <ul className="space-y-1 text-sm">
+              <li>• Refusing consent to a search can't be used against you. Refusing a test can</li>
+              <li>• NY law requires a roadside breath test when an officer asks after an accident or a traffic violation</li>
+              <li>• Refusing a chemical test after a DWI arrest means losing your license for at least 1 year, plus a $500 civil penalty (first refusal)</li>
+              <li>• If you were warned of the consequences, the refusal can be used as evidence against you at trial</li>
+              <li className="font-semibold">• You can ask to call a lawyer first, as long as it won't delay the test</li>
             </ul>
           </div>
         </div>
@@ -516,12 +537,13 @@ const LawEnforcementInteraction = () => {
         <div className="space-y-4">
           <div className="bg-red-900/20 p-4 rounded-lg border-l-4 border-red-400">
             <h4 className="font-bold text-red-300 mb-2">⚠️ Critical Legal Reality</h4>
-            <p className="text-sm font-semibold mb-2">Your statements to police can ONLY hurt you, never help you:</p>
+            <p className="text-sm font-semibold mb-2">Explaining yourself almost never helps, and it often hurts:</p>
             <ul className="space-y-1 text-sm">
               <li>• Anything you say CAN be used against you in court</li>
-              <li>• Anything you say in your defense CANNOT be used to help you (it's hearsay)</li>
-              <li>• There is NO legal benefit to explaining yourself to police</li>
+              <li>• You generally can't use your own roadside explanation to help your defense later (hearsay rules)</li>
               <li>• Even truthful statements can be misremembered or twisted</li>
+              <li>• Silence alone isn't enough: say out loud that you're invoking your right</li>
+              <li className="font-semibold">• Never lie. Lying to police can be a separate crime. Say nothing instead</li>
             </ul>
           </div>
 
@@ -544,11 +566,11 @@ const LawEnforcementInteraction = () => {
           <div className="bg-green-900/20 p-4 rounded-lg">
             <h4 className="font-bold text-green-300 mb-2">Recording is Your Right</h4>
             <ul className="space-y-1 text-sm">
-              <li className="font-semibold">• Recording police interactions is protected by the 1st Amendment</li>
+              <li className="font-semibold">• Recording police is protected by the 1st Amendment, and in NY also by state law (Civil Rights Law §79-p)</li>
               <li>• Use dash cam or phone mount (hands-free)</li>
               <li>• You don't need to inform officers you're recording</li>
-              <li>• Officers cannot legally order you to stop recording</li>
-              <li>• Never unlock phone without a warrant</li>
+              <li>• Officers can't make you stop unless you're physically interfering</li>
+              <li>• Don't unlock your phone or give your passcode. Police generally need a warrant to search it</li>
               <li>• Upload/backup recordings immediately</li>
             </ul>
           </div>
@@ -590,7 +612,7 @@ const LawEnforcementInteraction = () => {
             <div className="space-y-2 text-sm">
               <div className="flex items-start gap-2">
                 <CheckCircle className="h-4 w-4 text-green-500 mt-0.5 flex-shrink-0" />
-                <span>NO ID required unless suspected of specific crime <span className="text-xs">(4th Amendment)</span></span>
+                <span>You don't have to carry or show ID as a passenger. If you're suspected of a crime or being ticketed (like for no seatbelt), give your name and address: refusing can turn a ticket into an arrest</span>
               </div>
               <div className="flex items-start gap-2">
                 <CheckCircle className="h-4 w-4 text-green-500 mt-0.5 flex-shrink-0" />
@@ -598,15 +620,15 @@ const LawEnforcementInteraction = () => {
               </div>
               <div className="flex items-start gap-2">
                 <CheckCircle className="h-4 w-4 text-green-500 mt-0.5 flex-shrink-0" />
-                <span>Can refuse searches even if driver consents <span className="text-xs">(4th Amendment)</span></span>
+                <span>Can refuse a search of your own belongings, even if the driver consents to a car search <span className="text-xs">(4th Amendment)</span></span>
               </div>
               <div className="flex items-start gap-2">
                 <CheckCircle className="h-4 w-4 text-green-500 mt-0.5 flex-shrink-0" />
                 <span>Right to record the interaction <span className="text-xs">(1st Amendment)</span></span>
               </div>
               <div className="flex items-start gap-2">
-                <CheckCircle className="h-4 w-4 text-green-500 mt-0.5 flex-shrink-0" />
-                <span>Can leave on foot unless detained <span className="text-xs">(4th Amendment)</span></span>
+                <AlertTriangle className="h-4 w-4 text-amber-400 mt-0.5 flex-shrink-0" />
+                <span><strong>Don't walk away on your own.</strong> Passengers are legally detained for the whole stop. Ask "Am I free to leave?" and only go if they say yes</span>
               </div>
             </div>
           </div>
@@ -639,9 +661,9 @@ const LawEnforcementInteraction = () => {
           <div className="bg-yellow-900/20 p-4 rounded-lg">
             <h4 className="font-bold text-yellow-300 mb-2">🚶 Passenger-Specific Rights</h4>
             <ul className="space-y-2 text-sm">
-              <li>• Unless detained for a specific crime, passengers can usually leave on foot</li>
+              <li>• Police can order you out of the car and can keep you there until the stop ends</li>
               <li>• You are NOT responsible for the driver's violations</li>
-              <li>• Your belongings are separate - driver cannot consent to search YOUR bag</li>
+              <li>• The driver can't consent to a search of YOUR bag. But if police have probable cause to search the car, that can include passengers' bags</li>
               <li>• If police find something illegal that's not yours, do NOT claim ownership</li>
               <li>• You can refuse to answer questions about the driver</li>
             </ul>
@@ -684,8 +706,12 @@ const LawEnforcementInteraction = () => {
           <h2 className="text-2xl font-bold mb-4 text-text-primary">Street Stop Rights in New York</h2>
         </SectionHeader>
         <div className="bg-surface rounded-lg p-4 border-l-4 border-green-400">
-          <h3 className="font-bold text-green-300 mb-2">🔹 New York is NOT a "Stop and Identify" State</h3>
-          <p className="text-sm mb-4 text-text-muted">You are not required to show ID just because an officer asks. They need reasonable suspicion of a crime.</p>
+          <h3 className="font-bold text-green-300 mb-2">🔹 ID on the Street in New York</h3>
+          <div className="text-sm mb-4 text-text-muted space-y-2">
+            <p>Police can ask you questions at any time, even with no suspicion. You don't have to answer.</p>
+            <p>If they reasonably suspect you of a crime, NY law lets them demand your name, address and an explanation. Refusing isn't a crime by itself, and you never have to explain your conduct.</p>
+            <p className="font-semibold text-text-secondary">But if you're being given a ticket or summons, give your name and address. No photo ID is needed. If you won't identify yourself, they can arrest you instead of writing a ticket.</p>
+          </div>
           <div className="space-y-2 text-text-secondary">
             <div>✓ "Am I free to go?" <span className="text-xs">(4th Amendment - freedom from detention)</span></div>
             <div>✓ "I invoke my 5th Amendment right to remain silent"</div>
@@ -702,17 +728,18 @@ const LawEnforcementInteraction = () => {
             <ul className="space-y-2 text-sm">
               <li>• <strong>4th Amendment:</strong> Protection from unreasonable detention - you cannot be detained without reasonable suspicion</li>
               <li>• <strong>5th Amendment:</strong> You don't have to answer any questions</li>
-              <li>• <strong>1st Amendment:</strong> Right to record police in public spaces</li>
-              <li>• You can walk away unless told you're being detained</li>
+              <li>• <strong>1st Amendment</strong> and <strong>NY Civil Rights Law §79-p:</strong> Right to record police in public</li>
+              <li>• Ask "Am I free to go?" If yes, walk away calmly. Don't run</li>
               <li>• You can refuse consent to searches</li>
+              <li>• In NYC, before a consent search, NYPD must tell you the search won't happen if you refuse. If they search you, they must offer a business card (unless it ends in an arrest or summons)</li>
             </ul>
           </div>
 
           <div className="bg-red-900/20 p-4 rounded-lg">
-            <h4 className="font-bold text-red-300 mb-2">⚠️ Remember: Explanations Can't Help You</h4>
+            <h4 className="font-bold text-red-300 mb-2">⚠️ Remember: Explanations Rarely Help You</h4>
             <p className="text-sm">
-              Your explanations to police are inadmissible hearsay if you try to use them in your defense,
-              but CAN be used against you as evidence. There's no legal benefit to explaining yourself on the street.
+              What you say can be used against you, but you generally can't use your own street-corner explanation
+              to help your defense later (hearsay rules). Give your name when the law requires it, otherwise stay silent. Never lie.
             </p>
           </div>
         </div>
@@ -723,11 +750,12 @@ const LawEnforcementInteraction = () => {
           <div className="bg-blue-900/20 p-4 rounded-lg">
             <h4 className="font-bold text-blue-300 mb-2">Recording is Strongly Recommended</h4>
             <ul className="space-y-1 text-sm">
-              <li className="font-semibold">• Recording police is a 1st Amendment protected activity</li>
+              <li className="font-semibold">• Recording police is protected by the 1st Amendment and NY Civil Rights Law §79-p</li>
               <li>• You can record officers performing duties in public</li>
-              <li>• Keep a safe, non-interfering distance</li>
-              <li>• You don't have to stop recording if asked</li>
-              <li>• Officers cannot legally delete your recordings</li>
+              <li>• Keep a safe, non-interfering distance. If told to step back, step back and keep recording</li>
+              <li>• You don't have to stop recording if asked, unless you're physically interfering</li>
+              <li>• Officers cannot legally delete or copy your recordings without your consent or a court order</li>
+              <li>• NY's right-to-record laws don't cover police station lobbies (NY Court of Appeals, 2026)</li>
               <li>• Immediately backup/stream recordings to cloud</li>
             </ul>
           </div>
@@ -744,6 +772,7 @@ const LawEnforcementInteraction = () => {
               <li>• You can refuse consent to searches beyond pat-down</li>
               <li>• Ask: "Am I being detained or am I free to go?"</li>
               <li>• If free to go, you can leave immediately</li>
+              <li>• If you're detained, don't walk away. Stay silent and don't consent</li>
             </ul>
           </div>
         </div>
@@ -759,7 +788,7 @@ const LawEnforcementInteraction = () => {
           <h2 className="text-2xl font-bold mb-4 text-text-primary">Police at Your Home</h2>
         </SectionHeader>
         <div className="bg-surface rounded-lg p-4 border-l-4 border-yellow-400">
-          <h3 className="font-bold text-yellow-300 mb-2">🏠 Your 4th Amendment Castle Doctrine Rights</h3>
+          <h3 className="font-bold text-yellow-300 mb-2">🏠 Your Home's 4th Amendment Protection</h3>
           <p className="text-sm mb-4 text-text-muted">Your home has the strongest Fourth Amendment protections against unreasonable searches.</p>
           <div className="space-y-2 text-text-secondary">
             <div>✓ You don't have to open the door</div>
@@ -789,11 +818,13 @@ const LawEnforcementInteraction = () => {
           <h4 className="font-bold text-red-300 mb-2">Limited Exceptions (Very Narrow):</h4>
           <ul className="space-y-2 text-sm">
             <li>• <strong>Valid Search Warrant:</strong> Must be signed by a judge, not just police</li>
+            <li>• <strong>Arrest Warrant:</strong> Only for the named person's own home, and only if police reasonably believe they're inside</li>
             <li>• <strong>Hot Pursuit:</strong> Chasing someone who just committed a crime</li>
             <li>• <strong>Immediate Danger:</strong> Someone inside is in immediate peril</li>
             <li>• <strong>Destruction of Evidence:</strong> Very limited and specific circumstances</li>
           </ul>
           <p className="text-xs mt-3 font-semibold">Note: "We just want to talk" or "We're investigating" are NOT valid reasons for entry</p>
+          <p className="text-xs mt-2">If they come in anyway, don't physically resist. Say "I do not consent," stay silent, and record. A court can throw out what they find.</p>
         </div>
       </Accordion>
 
@@ -842,7 +873,7 @@ const LawEnforcementInteraction = () => {
           <div className="space-y-2 text-text-secondary">
             <div>✓ 5th Amendment right to remain silent</div>
             <div>✓ 4th Amendment right against unreasonable searches</div>
-            <div>✓ 6th Amendment right to an attorney</div>
+            <div>✓ Right to a lawyer in immigration court, but not a free one (it's civil, not criminal). Ask for legal aid</div>
             <div>✓ Do not sign anything without an attorney</div>
             <div>✓ Right to refuse entry without judicial warrant</div>
           </div>
@@ -872,8 +903,21 @@ const LawEnforcementInteraction = () => {
             <li>"I invoke my 5th Amendment right to remain silent"</li>
             <li>"I do not consent to any entry or searches"</li>
             <li>"I will not sign anything without an attorney"</li>
-            <li>"I am exercising my right to an attorney"</li>
-            <li>"Show me a warrant signed by a federal judge"</li>
+            <li>"I want to speak with a lawyer"</li>
+            <li>"Show me a warrant signed by a judge"</li>
+          </ul>
+        </div>
+      </Accordion>
+
+      <Accordion title="🚶 If ICE Stops You in Public" isImportant={true}>
+        <div className="bg-amber-900/20 p-4 rounded-lg">
+          <ul className="space-y-2 text-sm">
+            <li>• Ask: "Am I free to go?" If yes, walk away calmly. Don't run</li>
+            <li>• You can stay silent about where you were born, your status, and how you entered the U.S.</li>
+            <li className="font-semibold">• Never lie and never show false documents. Both can be crimes and can destroy future immigration options</li>
+            <li>• <strong>If you have valid papers</strong> (green card, visa) and are 18 or older, federal law requires you to carry them</li>
+            <li>• Don't consent to a search of you or your bag</li>
+            <li>• Don't physically resist, even if you think the stop is unlawful</li>
           </ul>
         </div>
       </Accordion>
@@ -892,7 +936,8 @@ const LawEnforcementInteraction = () => {
           <div className="space-y-3 text-sm text-text-secondary">
             <div>
               <strong>1st Amendment:</strong> Right to record police, freedom of speech, assembly
-              <p className="text-xs mt-1 text-text-muted">• You can record any police interaction in public spaces</p>
+              <p className="text-xs mt-1 text-text-muted">• You can record police in public spaces without interfering</p>
+              <p className="text-xs text-text-muted">• In NY, state law (Civil Rights Law §79-p) also protects this right</p>
             </div>
             <div>
               <strong>4th Amendment:</strong> Protection from unreasonable searches and seizures
@@ -902,11 +947,12 @@ const LawEnforcementInteraction = () => {
             <div>
               <strong>5th Amendment:</strong> Right to remain silent, protection against self-incrimination
               <p className="text-xs mt-1 text-text-muted">• You cannot be forced to answer questions</p>
-              <p className="text-xs text-text-muted">• Must be clearly invoked to be effective</p>
+              <p className="text-xs text-text-muted">• Must be clearly invoked out loud. Just staying quiet isn't enough</p>
+              <p className="text-xs text-text-muted">• Also gives you the right to a lawyer during custodial questioning (Miranda). Say "I want a lawyer" clearly</p>
             </div>
             <div>
-              <strong>6th Amendment:</strong> Right to an attorney
-              <p className="text-xs mt-1 text-text-muted">• Applies during custodial interrogation</p>
+              <strong>6th Amendment:</strong> Right to an attorney once you're formally charged
+              <p className="text-xs mt-1 text-text-muted">• If you can't afford one, the court must appoint one for charges that can lead to jail</p>
             </div>
           </div>
         </div>
@@ -928,19 +974,19 @@ const LawEnforcementInteraction = () => {
         </div>
       </Accordion>
 
-      <Accordion title="⚠️ Why You Should NEVER Explain Yourself" isImportant={true}>
+      <Accordion title="⚠️ Why You Shouldn't Explain Yourself" isImportant={true}>
         <div className="bg-red-900/20 p-4 rounded-lg">
-          <h4 className="font-bold text-red-300 mb-2">The Legal Asymmetry - Statements Can Only Hurt You:</h4>
+          <h4 className="font-bold text-red-300 mb-2">The Legal Asymmetry - Statements Usually Only Hurt You:</h4>
           <ul className="space-y-2 text-sm">
             <li className="font-semibold">• Your statements CAN be used AGAINST you in court</li>
-            <li className="font-semibold">• Your statements CANNOT be used to HELP you (they're hearsay)</li>
+            <li className="font-semibold">• You generally CAN'T use your own out-of-court explanation to HELP you (hearsay rules)</li>
             <li>• Even truthful explanations can be twisted or misremembered</li>
-            <li>• "Clearing things up" with police has no legal benefit</li>
+            <li>• "Clearing things up" with police rarely helps</li>
             <li>• Innocent explanations can accidentally provide probable cause</li>
             <li>• Your defense belongs in court with your attorney, not on the street</li>
           </ul>
           <p className="text-xs mt-3 font-semibold bg-red-900/30 p-2 rounded">
-            REMEMBER: There is literally NO legal advantage to explaining yourself to police. Save your defense for court where it can actually help you.
+            REMEMBER: Give your name and documents when the law requires them. Beyond that, say nothing. Never lie: lying to police can be a separate crime, while silence never is.
           </p>
         </div>
       </Accordion>
@@ -950,7 +996,9 @@ const LawEnforcementInteraction = () => {
           <h4 className="font-bold text-red-300 mb-2">Never Recommended:</h4>
           <ul className="space-y-1 text-sm">
             <li>✗ Answering questions during an investigation</li>
-            <li>✗ Trying to "explain your side" (it's hearsay and can't help you in court)</li>
+            <li>✗ Trying to "explain your side" (it generally can't help you in court)</li>
+            <li>✗ Lying or giving a false name (that can be its own crime)</li>
+            <li>✗ Running away</li>
             <li>✗ Consenting to any searches</li>
             <li>✗ Providing information beyond ID when required</li>
             <li>✗ Making statements about where you've been or are going</li>
@@ -959,7 +1007,7 @@ const LawEnforcementInteraction = () => {
             <li>✗ Arguing law with officers on scene</li>
             <li>✗ Signing anything without reading and understanding</li>
           </ul>
-          <p className="text-xs mt-3 font-semibold">Remember: Anything you say can and will be used against you, but CANNOT be used to help you (it's hearsay)</p>
+          <p className="text-xs mt-3 font-semibold">Remember: Anything you say can and will be used against you, but generally can't be used to help you</p>
         </div>
       </Accordion>
 
@@ -982,7 +1030,7 @@ const LawEnforcementInteraction = () => {
         <div className="bg-yellow-900/20 p-4 rounded-lg">
           <h4 className="font-bold text-yellow-300 mb-2">Protecting Your Rights After:</h4>
           <ul className="space-y-1 text-sm">
-            <li>• File complaints for rights violations</li>
+            <li>• File complaints for rights violations. For NYPD, contact the Civilian Complaint Review Board (CCRB) or call 311</li>
             <li>• Contact civil rights attorneys</li>
             <li>• Preserve all evidence and recordings</li>
             <li>• Get medical attention if needed (document injuries)</li>
@@ -999,9 +1047,8 @@ const LawEnforcementInteraction = () => {
         </h4>
         <p className="text-xs text-text-muted">
           This app provides general information about legal rights in the United States. It is not legal advice,
-          and no attorney-client relationship is created. Laws may vary by state and jurisdiction. Constitutional
-          rights described here are based on federal law, but state and local laws may provide additional protections
-          or requirements. For legal advice specific to your situation, consult a licensed attorney in your jurisdiction.
+          and no attorney-client relationship is created. Laws may vary by state and jurisdiction. Rights described here
+          are based on federal and New York law; other states' laws may provide different protections or requirements. For legal advice specific to your situation, consult a licensed attorney in your jurisdiction.
           If you are arrested or charged with a crime, seek legal counsel immediately.
         </p>
       </div>

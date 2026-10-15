@@ -35,6 +35,20 @@ export const searchIndex = [
     description: 'What to do if ordered to exit your vehicle during a stop.',
   },
   {
+    id: 'vehicle-driver-probable-cause',
+    title: 'If They Search Your Car Anyway',
+    keywords: ['probable cause', 'search', 'car search', 'vehicle search', 'without consent', 'business card', 'right to know'],
+    section: '/vehicle/driver',
+    description: 'With probable cause police can search your car without consent. Say no, don\'t resist.',
+  },
+  {
+    id: 'vehicle-driver-breath-test',
+    title: 'Breath & Chemical Tests',
+    keywords: ['breath test', 'breathalyzer', 'chemical test', 'dwi', 'dui', 'refuse test', 'drunk driving', 'license revoked'],
+    section: '/vehicle/driver',
+    description: 'Refusing a chemical test after a DWI arrest in NY costs your license for at least a year.',
+  },
+  {
     id: 'vehicle-driver-invocations',
     title: 'What to Say - Legal Invocations',
     keywords: ['invoke', 'what to say', 'silent', 'consent', 'attorney', 'lawyer', 'detained', 'free to go', 'hearsay'],
@@ -51,9 +65,9 @@ export const searchIndex = [
   {
     id: 'vehicle-passenger-rights',
     title: 'Passenger Rights',
-    keywords: ['passenger', 'no id', 'leave on foot', 'refuse search', 'belongings', 'not responsible'],
+    keywords: ['passenger', 'no id', 'leave', 'free to leave', 'detained', 'seatbelt', 'refuse search', 'belongings', 'not responsible'],
     section: '/vehicle/passenger',
-    description: 'Key rights specific to passengers: no ID required, can leave on foot, separate belongings.',
+    description: 'Passenger rights: no ID required unless ticketed or suspected, ask before leaving, your belongings.',
   },
   {
     id: 'vehicle-passenger-recording',
@@ -65,9 +79,9 @@ export const searchIndex = [
   {
     id: 'street-rights',
     title: 'Street Stop Rights',
-    keywords: ['street', 'stop and identify', 'new york', 'reasonable suspicion', 'free to go', 'walking'],
+    keywords: ['street', 'stop and identify', 'id', 'name', 'new york', 'reasonable suspicion', 'free to go', 'walking', 'ticket', 'summons'],
     section: '/street',
-    description: 'New York is not a stop-and-identify state. You are not required to show ID without reasonable suspicion.',
+    description: 'When NY police can demand your name, and why you should give it if you are being ticketed.',
   },
   {
     id: 'street-constitutional',
@@ -81,7 +95,7 @@ export const searchIndex = [
     title: 'Recording Street Interactions',
     keywords: ['record', 'recording', '1st amendment', 'camera', 'phone', 'public', 'delete'],
     section: '/street',
-    description: 'Recording police is strongly recommended and protected by the 1st Amendment.',
+    description: 'Recording police is protected by the 1st Amendment and NY Civil Rights Law 79-p.',
   },
   {
     id: 'street-terry-stop',
@@ -92,8 +106,8 @@ export const searchIndex = [
   },
   {
     id: 'home-castle',
-    title: 'Castle Doctrine Rights',
-    keywords: ['home', 'castle doctrine', '4th amendment', 'door', 'speak through door', 'warrant'],
+    title: 'Home Protection Rights',
+    keywords: ['home', 'house', 'apartment', '4th amendment', 'door', 'speak through door', 'warrant'],
     section: '/home',
     description: 'Your home has the strongest Fourth Amendment protections against unreasonable searches.',
   },
@@ -133,11 +147,18 @@ export const searchIndex = [
     description: 'What to say to ICE agents: invoke silence, refuse entry, never sign without attorney.',
   },
   {
+    id: 'ice-public',
+    title: 'If ICE Stops You in Public',
+    keywords: ['ice', 'immigration', 'public', 'street', 'papers', 'green card', 'visa', 'documents', 'false documents'],
+    section: '/ice',
+    description: 'Stay silent, never lie or show false papers, carry valid papers if you have them.',
+  },
+  {
     id: 'rights-amendments',
     title: 'Key Constitutional Amendments',
     keywords: ['1st amendment', '4th amendment', '5th amendment', '6th amendment', 'constitution', 'bill of rights'],
     section: '/rights',
-    description: 'Overview of key amendments: 1st (record), 4th (search/seizure), 5th (silence), 6th (attorney).',
+    description: 'Overview of key amendments: 1st (record), 4th (search/seizure), 5th (silence, lawyer during questioning), 6th (lawyer once charged).',
   },
   {
     id: 'rights-critical-phrases',
@@ -149,9 +170,9 @@ export const searchIndex = [
   {
     id: 'rights-never-explain',
     title: 'Why Never Explain Yourself',
-    keywords: ['explain', 'hearsay', 'statements', 'against you', 'asymmetry', 'never help'],
+    keywords: ['explain', 'hearsay', 'statements', 'against you', 'asymmetry', 'lie', 'lying'],
     section: '/rights',
-    description: 'The legal asymmetry: your statements can only hurt you, never help you in court.',
+    description: 'The legal asymmetry: your statements can hurt you but generally cannot help you. Never lie.',
   },
   {
     id: 'rights-what-not-to-do',
@@ -170,7 +191,7 @@ export const searchIndex = [
   {
     id: 'rights-after-encounter',
     title: 'After the Encounter',
-    keywords: ['complaint', 'attorney', 'body cam', 'evidence', 'medical', 'social media'],
+    keywords: ['complaint', 'ccrb', '311', 'attorney', 'body cam', 'evidence', 'medical', 'social media'],
     section: '/rights',
     description: 'Steps after an encounter: file complaints, preserve evidence, request body cam footage.',
   },
