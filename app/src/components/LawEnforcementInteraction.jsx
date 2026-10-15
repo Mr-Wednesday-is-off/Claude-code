@@ -312,7 +312,11 @@ const LawEnforcementInteraction = () => {
   const [completedSections, setCompletedSections] = useState(new Set());
   const [theme, setTheme] = useState(() => {
     if (typeof window !== 'undefined') {
-      return localStorage.getItem('theme') || 'dark';
+      try {
+        return localStorage.getItem('theme') || 'dark';
+      } catch {
+        return 'dark'; // storage blocked (sandboxed viewer, private mode)
+      }
     }
     return 'dark';
   });
@@ -341,7 +345,11 @@ const LawEnforcementInteraction = () => {
     } else {
       document.documentElement.removeAttribute('data-theme');
     }
-    localStorage.setItem('theme', theme);
+    try {
+      localStorage.setItem('theme', theme);
+    } catch {
+      // storage blocked; theme just won't persist
+    }
   }, [theme]);
 
   const toggleTheme = () => setTheme(prev => prev === 'dark' ? 'light' : 'dark');
