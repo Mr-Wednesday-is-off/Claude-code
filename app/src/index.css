@@ -22,23 +22,42 @@
 
 /* Light mode override */
 [data-theme="light"] {
-  --app-background: #ffffff;
+  --app-background: #f1f5f9;
   --app-foreground: #0f172a;
-  --app-card: #f8fafc;
+  --app-card: #ffffff;
   --app-card-foreground: #0f172a;
-  --app-surface: #f8fafc;
-  --app-surface-hover: #f1f5f9;
+  --app-surface: #ffffff;
+  --app-surface-hover: #f8fafc;
   --app-text-primary: #0f172a;
-  --app-text-secondary: #334155;
-  --app-text-muted: #64748b;
-  --app-border: #e2e8f0;
+  --app-text-secondary: #1e293b;
+  --app-text-muted: #475569;
+  --app-border: #cbd5e1;
   --app-border-subtle: #e2e8f0;
-  --app-muted: #f1f5f9;
-  --app-muted-foreground: #64748b;
-  --app-accent-gold: #f59e0b;
-  --app-accent-gold-hover: #d97706;
-  --app-input: #e2e8f0;
+  --app-muted: #e2e8f0;
+  --app-muted-foreground: #475569;
+  --app-accent-gold: #d97706;
+  --app-accent-gold-hover: #b45309;
+  --app-input: #f1f5f9;
 }
+
+/* Light mode: swap dark-tinted content blocks for light-tinted equivalents */
+[data-theme="light"] .bg-blue-900\/20    { background-color: rgb(219 234 254 / 0.6); }
+[data-theme="light"] .bg-red-900\/20     { background-color: rgb(254 226 226 / 0.6); }
+[data-theme="light"] .bg-green-900\/20   { background-color: rgb(220 252 231 / 0.6); }
+[data-theme="light"] .bg-yellow-900\/20  { background-color: rgb(254 249 195 / 0.6); }
+[data-theme="light"] .bg-purple-900\/20  { background-color: rgb(243 232 255 / 0.6); }
+[data-theme="light"] .bg-orange-900\/20  { background-color: rgb(255 237 213 / 0.6); }
+
+/* Light mode: darken heading colors for readability on light backgrounds */
+[data-theme="light"] .text-red-300    { color: #b91c1c; }
+[data-theme="light"] .text-red-400    { color: #dc2626; }
+[data-theme="light"] .text-blue-300   { color: #1d4ed8; }
+[data-theme="light"] .text-green-300  { color: #15803d; }
+[data-theme="light"] .text-yellow-300 { color: #a16207; }
+[data-theme="light"] .text-purple-300 { color: #7e22ce; }
+[data-theme="light"] .text-orange-300 { color: #c2410c; }
+[data-theme="light"] .text-blue-600   { color: #1d4ed8; }
+[data-theme="light"] .text-green-600  { color: #15803d; }
 
 @theme {
   --font-sans: 'Inter', system-ui, -apple-system, sans-serif;

@@ -9,12 +9,14 @@ import { ChevronLeft, ChevronDown, Car, Users, Home, Scale, FileWarning, Search,
 const ProgressBar = ({ completed, total }) => {
   const percentage = total > 0 ? (completed / total) * 100 : 0;
   return (
-    <div className="w-full bg-muted rounded-full h-2 mb-4">
-      <div
-        className="bg-accent-gold h-2 rounded-full transition-all duration-500"
-        style={{ width: `${percentage}%` }}
-      />
-      <div className="text-sm text-text-muted mt-1">
+    <div className="w-full mb-6">
+      <div className="bg-muted rounded-full h-2">
+        <div
+          className="bg-accent-gold h-2 rounded-full transition-all duration-500"
+          style={{ width: `${percentage}%` }}
+        />
+      </div>
+      <div className="text-sm text-text-muted mt-2">
         {completed} of {total} sections explored
       </div>
     </div>
@@ -253,14 +255,14 @@ const LawEnforcementInteraction = () => {
                     setCurrentStep({ ...currentStep, vehicle: "driver" });
                     markSectionCompleted("vehicle-driver");
                   }}
-                  className="h-auto py-6 px-6 text-left justify-start bg-surface border border-border-subtle hover:border-accent-gold/50 text-text-primary hover:bg-surface-hover"
+                  className="h-auto py-5 px-4 text-left justify-start bg-surface border border-border-subtle hover:border-accent-gold/50 text-text-primary hover:bg-surface-hover w-full"
                   variant="outline"
                 >
-                  <div className="flex items-center gap-4">
-                    <Car className="h-8 w-8 text-blue-600" />
-                    <div>
+                  <div className="flex items-center gap-3 min-w-0 w-full">
+                    <Car className="h-8 w-8 shrink-0 text-blue-600" />
+                    <div className="min-w-0">
                       <div className="font-semibold text-lg">I'm the Driver</div>
-                      <div className="text-sm text-text-muted">Learn your rights and responsibilities as the driver</div>
+                      <div className="text-sm text-text-muted text-wrap">Learn your rights and responsibilities as the driver</div>
                     </div>
                   </div>
                 </Button>
@@ -270,14 +272,14 @@ const LawEnforcementInteraction = () => {
                     setCurrentStep({ ...currentStep, vehicle: "passenger" });
                     markSectionCompleted("vehicle-passenger");
                   }}
-                  className="h-auto py-6 px-6 text-left justify-start bg-surface border border-border-subtle hover:border-accent-gold/50 text-text-primary hover:bg-surface-hover"
+                  className="h-auto py-5 px-4 text-left justify-start bg-surface border border-border-subtle hover:border-accent-gold/50 text-text-primary hover:bg-surface-hover w-full"
                   variant="outline"
                 >
-                  <div className="flex items-center gap-4">
-                    <Users className="h-8 w-8 text-green-600" />
-                    <div>
+                  <div className="flex items-center gap-3 min-w-0 w-full">
+                    <Users className="h-8 w-8 shrink-0 text-green-600" />
+                    <div className="min-w-0">
                       <div className="font-semibold text-lg">I'm a Passenger</div>
-                      <div className="text-sm text-text-muted">Understand your specific rights as a passenger</div>
+                      <div className="text-sm text-text-muted text-wrap">Understand your specific rights as a passenger</div>
                     </div>
                   </div>
                 </Button>
