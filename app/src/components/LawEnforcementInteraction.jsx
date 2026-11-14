@@ -1,55 +1,55 @@
-import React, { useState, useCallback, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   ChevronLeft, ChevronDown, Car, Users, Home, Scale,
-  FileWarning, Search, CheckCircle, AlertTriangle, Shield
+  FileWarning, Search, CheckCircle, AlertTriangle, Shield, Sun, Moon
 } from "lucide-react";
 import ShareButton from "./ShareButton";
+import InstallPrompt from "./InstallPrompt";
 import { search as performSearch } from "../searchEngine";
 import { sectionBasePaths, validSections } from "../routes";
 
-// Progress Component
-const ProgressBar = ({ completed, total }) => {
-  const percentage = total > 0 ? (completed / total) * 100 : 0;
+// Collapsed one-line legal disclaimer
+const Disclaimer = () => {
+  const [open, setOpen] = useState(false);
   return (
-    <div className="w-full bg-muted rounded-full h-2 mb-4">
-      <div
-        className="bg-accent-gold h-2 rounded-full transition-all duration-500"
-        style={{ width: `${percentage}%` }}
-      />
-      <div className="text-sm text-text-muted mt-1">
-        {completed} of {total} sections explored
-      </div>
+    <div className="mt-3 text-sm text-text-muted">
+      <button
+        onClick={() => setOpen(!open)}
+        aria-expanded={open}
+        className="flex items-center gap-1.5 text-left"
+      >
+        <Scale className="h-4 w-4 shrink-0" />
+        <span>General information, not legal advice.</span>
+        <span className="underline underline-offset-2">{open ? "Hide" : "Details"}</span>
+      </button>
+      {open && (
+        <p className="mt-2 leading-relaxed">
+          This app provides general information about legal rights in the United States.
+          It is not legal advice, and no attorney-client relationship is created. Laws may vary by state.
+          For legal advice specific to your situation, consult a licensed attorney.
+        </p>
+      )}
     </div>
   );
 };
 
-// Quick Actions Component
-const QuickActions = ({ navigate }) => {
-  const quickActions = [
-    { icon: AlertTriangle, text: "Emergency Rights", path: "/rights" },
-    { icon: Car, text: "Traffic Stop", path: "/vehicle" },
-    { icon: Users, text: "Street Stop", path: "/street" },
-    { icon: Home, text: "Home Visit", path: "/home" }
-  ];
-
-  return (
-    <div className="grid grid-cols-2 gap-3 mb-6">
-      {quickActions.map((action, index) => (
-        <div
-          key={index}
-          onClick={() => navigate(action.path)}
-          className="bg-surface border border-border-subtle rounded-xl p-3 flex items-center gap-2 cursor-pointer hover:bg-surface-hover transition-colors"
-        >
-          <action.icon className="h-5 w-5 text-accent-gold" />
-          <span className="text-base font-medium text-text-primary">{action.text}</span>
-        </div>
-      ))}
-    </div>
-  );
+// Theme: a saved choice wins, otherwise follow the device setting
+const getInitialTheme = () => {
+  try {
+    const saved = localStorage.getItem('theme');
+    if (saved === 'light' || saved === 'dark') return saved;
+  } catch {
+    // storage blocked (sandboxed viewer, private mode)
+  }
+  try {
+    if (window.matchMedia('(prefers-color-scheme: light)').matches) return 'light';
+  } catch {
+    // matchMedia unavailable
+  }
+  return 'dark';
 };
 
 // Highlight matching terms in text
@@ -102,11 +102,11 @@ const SearchBar = ({ query, setQuery, results, onResultClick }) => {
   const showResults = !dismissed && query.trim().length > 0 && results.length > 0;
 
   return (
-    <div className="relative mb-6" ref={containerRef}>
+    <div className="relative" ref={containerRef}>
       <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-text-muted h-4 w-4" />
       <input
         type="text"
-        placeholder="Search rights, procedures, or ask a question..."
+        placeholder="Search or ask a question..."
         value={query}
         onChange={(e) => setQuery(e.target.value)}
         onFocus={() => setDismissed(false)}
@@ -149,13 +149,8 @@ const SearchBar = ({ query, setQuery, results, onResultClick }) => {
   );
 };
 
-// Section Header with Share Button
-const SectionHeader = ({ children }) => (
-  <div className="flex items-start justify-between gap-3">
-    <div className="flex-1">{children}</div>
-    <ShareButton />
-  </div>
-);
+// Section Header
+const SectionHeader = ({ children }) => <div>{children}</div>;
 
 // Enhanced Accordion
 const Accordion = ({ title, children, isImportant = false }) => {
@@ -165,6 +160,7 @@ const Accordion = ({ title, children, isImportant = false }) => {
     <div className={`border rounded-xl mb-4 ${isImportant ? 'border-accent-gold/30 bg-accent-gold/5' : 'border-border-subtle bg-surface'}`}>
       <button
         onClick={() => setIsOpen(!isOpen)}
+        aria-expanded={isOpen}
         className="w-full p-4 flex items-center justify-between text-left hover:bg-surface-hover transition-colors rounded-xl"
       >
         <span className={`font-semibold text-base ${isImportant ? 'text-accent-gold' : 'text-text-primary'}`}>
@@ -197,45 +193,18 @@ const stepLabels = {
 };
 
 const Breadcrumb = ({ section, step, navigate }) => {
-  const crumbs = [
-    { label: "Home", action: () => navigate(sectionBasePaths[section]) },
-  ];
-
-  crumbs.push({
-    label: tabLabels[section] || section,
-    action: () => navigate(sectionBasePaths[section]),
-  });
-
-  if (step && step !== "initial" && stepLabels[step]) {
-    crumbs.push({
-      label: stepLabels[step],
-      action: null,
-    });
-  }
-
-  const displayCrumbs = crumbs.length > 3
-    ? [crumbs[0], { label: "...", action: null }, crumbs[crumbs.length - 1]]
-    : crumbs;
+  if (!step || step === "initial" || !stepLabels[step]) return null;
 
   return (
-    <nav className="flex items-center gap-1.5 text-sm text-text-muted py-2 px-4 sm:px-6 overflow-x-auto scrollbar-hide">
-      {displayCrumbs.map((crumb, i) => (
-        <React.Fragment key={i}>
-          {i > 0 && <span className="text-text-muted/50">→</span>}
-          {crumb.action && i < displayCrumbs.length - 1 ? (
-            <button
-              onClick={crumb.action}
-              className="hover:text-accent-gold transition-colors whitespace-nowrap"
-            >
-              {crumb.label}
-            </button>
-          ) : (
-            <span className={`whitespace-nowrap ${i === displayCrumbs.length - 1 ? 'text-text-secondary font-medium' : ''}`}>
-              {crumb.label}
-            </span>
-          )}
-        </React.Fragment>
-      ))}
+    <nav aria-label="Breadcrumb" className="flex items-center gap-1.5 text-sm text-text-muted">
+      <button
+        onClick={() => navigate(sectionBasePaths[section])}
+        className="hover:text-accent-gold transition-colors whitespace-nowrap"
+      >
+        {tabLabels[section] || section}
+      </button>
+      <span className="text-text-muted/50">→</span>
+      <span className="whitespace-nowrap text-text-secondary font-medium">{stepLabels[step]}</span>
     </nav>
   );
 };
@@ -309,17 +278,7 @@ const LawEnforcementInteraction = () => {
   // Local state (not URL-driven)
   const [searchQuery, setSearchQuery] = useState("");
   const [searchResults, setSearchResults] = useState([]);
-  const [completedSections, setCompletedSections] = useState(new Set());
-  const [theme, setTheme] = useState(() => {
-    if (typeof window !== 'undefined') {
-      try {
-        return localStorage.getItem('theme') || 'dark';
-      } catch {
-        return 'dark'; // storage blocked (sandboxed viewer, private mode)
-      }
-    }
-    return 'dark';
-  });
+  const [theme, setTheme] = useState(getInitialTheme);
 
   // Animation direction
   const [navDirection, setNavDirection] = useState(1);
@@ -345,14 +304,20 @@ const LawEnforcementInteraction = () => {
     } else {
       document.documentElement.removeAttribute('data-theme');
     }
+    document
+      .querySelector('meta[name="theme-color"]')
+      ?.setAttribute('content', theme === 'light' ? '#f8fafc' : '#1e293b');
+  }, [theme]);
+
+  const toggleTheme = () => {
+    const next = theme === 'dark' ? 'light' : 'dark';
+    setTheme(next);
     try {
-      localStorage.setItem('theme', theme);
+      localStorage.setItem('theme', next);
     } catch {
       // storage blocked; theme just won't persist
     }
-  }, [theme]);
-
-  const toggleTheme = () => setTheme(prev => prev === 'dark' ? 'light' : 'dark');
+  };
 
   // Search
   useEffect(() => {
@@ -369,15 +334,6 @@ const LawEnforcementInteraction = () => {
     setSearchResults([]);
   };
 
-  // Track completed sections
-  const markSectionCompleted = useCallback((sectionId) => {
-    setCompletedSections(prev => {
-      const newSet = new Set(prev);
-      newSet.add(sectionId);
-      return newSet;
-    });
-  }, []);
-
   const contentKey = `${section}-${currentStep}`;
 
   const slideVariants = {
@@ -389,22 +345,19 @@ const LawEnforcementInteraction = () => {
   // --- Vehicle Section ---
   const renderVehicleInitial = () => (
     <div className="space-y-6">
-      <div className="bg-blue-900/20 rounded-xl p-6">
+      <div className="bg-blue-900/20 light:bg-blue-50 rounded-xl p-4 sm:p-6">
         <SectionHeader>
           <h2 className="text-2xl font-bold mb-4 text-text-primary">Are you the driver or a passenger?</h2>
         </SectionHeader>
         <p className="text-text-muted mb-6">Your rights and responsibilities differ based on your role in the vehicle.</p>
         <div className="grid gap-4">
           <Button
-            onClick={() => {
-              navigate('/vehicle/driver');
-              markSectionCompleted("vehicle-driver");
-            }}
-            className="h-auto py-6 px-6 text-left justify-start bg-surface border border-border-subtle hover:border-accent-gold/50 text-text-primary hover:bg-surface-hover"
+            onClick={() => navigate('/vehicle/driver')}
+            className="h-auto w-full whitespace-normal py-5 px-4 sm:px-6 text-left justify-start bg-surface border border-border-subtle hover:border-accent-gold/50 text-text-primary hover:bg-surface-hover"
             variant="outline"
           >
             <div className="flex items-center gap-4">
-              <Car className="h-8 w-8 text-blue-600" />
+              <Car className="h-8 w-8 shrink-0 text-blue-600" />
               <div>
                 <div className="font-semibold text-lg">I'm the Driver</div>
                 <div className="text-sm text-text-muted">Learn your rights and responsibilities as the driver</div>
@@ -412,15 +365,12 @@ const LawEnforcementInteraction = () => {
             </div>
           </Button>
           <Button
-            onClick={() => {
-              navigate('/vehicle/passenger');
-              markSectionCompleted("vehicle-passenger");
-            }}
-            className="h-auto py-6 px-6 text-left justify-start bg-surface border border-border-subtle hover:border-accent-gold/50 text-text-primary hover:bg-surface-hover"
+            onClick={() => navigate('/vehicle/passenger')}
+            className="h-auto w-full whitespace-normal py-5 px-4 sm:px-6 text-left justify-start bg-surface border border-border-subtle hover:border-accent-gold/50 text-text-primary hover:bg-surface-hover"
             variant="outline"
           >
             <div className="flex items-center gap-4">
-              <Users className="h-8 w-8 text-green-600" />
+              <Users className="h-8 w-8 shrink-0 text-green-600" />
               <div>
                 <div className="font-semibold text-lg">I'm a Passenger</div>
                 <div className="text-sm text-text-muted">Understand your specific rights as a passenger</div>
@@ -450,8 +400,8 @@ const LawEnforcementInteraction = () => {
       <Accordion title="🚗 If You're Stopped as a Driver" isImportant={true}>
         <div className="space-y-6">
           <div className="grid md:grid-cols-2 gap-4">
-            <div className="bg-red-900/20 p-4 rounded-lg border-l-4 border-red-400">
-              <h4 className="font-bold text-red-300 mb-2">Immediate Actions</h4>
+            <div className="bg-red-900/20 light:bg-red-50 p-4 rounded-lg border-l-4 border-red-400">
+              <h4 className="font-bold text-red-300 light:text-red-800 mb-2">Immediate Actions</h4>
               <ul className="space-y-1 text-sm">
                 <li>• Pull over safely and turn off engine</li>
                 <li>• Turn on interior light if dark</li>
@@ -460,8 +410,8 @@ const LawEnforcementInteraction = () => {
                 <li>• Record hands-free if you can (dash cam or phone mount), don't reach for a phone</li>
               </ul>
             </div>
-            <div className="bg-blue-900/20 p-4 rounded-lg border-l-4 border-blue-400">
-              <h4 className="font-bold text-blue-300 mb-2">Required Documents</h4>
+            <div className="bg-blue-900/20 light:bg-blue-50 p-4 rounded-lg border-l-4 border-blue-400">
+              <h4 className="font-bold text-blue-300 light:text-blue-800 mb-2">Required Documents</h4>
               <ul className="space-y-1 text-sm">
                 <li>• Driver's license</li>
                 <li>• Vehicle registration</li>
@@ -472,8 +422,8 @@ const LawEnforcementInteraction = () => {
             </div>
           </div>
 
-          <div className="bg-purple-900/20 p-4 rounded-lg">
-            <h4 className="font-bold text-purple-300 mb-3">Your Constitutional Rights During the Stop</h4>
+          <div className="bg-purple-900/20 light:bg-purple-50 p-4 rounded-lg">
+            <h4 className="font-bold text-purple-300 light:text-purple-800 mb-3">Your Constitutional Rights During the Stop</h4>
             <div className="grid md:grid-cols-2 gap-4 text-sm">
               <div>
                 <h5 className="font-semibold mb-2">You Have the Right To:</h5>
@@ -488,7 +438,7 @@ const LawEnforcementInteraction = () => {
               </div>
               <div>
                 <h5 className="font-semibold mb-2">NOT Recommended:</h5>
-                <ul className="space-y-2 text-red-400">
+                <ul className="space-y-2 text-red-400 light:text-red-700">
                   <li>✗ Answering investigative questions (rarely helps, often hurts)</li>
                   <li>✗ Trying to "explain" or "clear things up"</li>
                   <li>✗ Consenting to any searches</li>
@@ -500,8 +450,8 @@ const LawEnforcementInteraction = () => {
             </div>
           </div>
 
-          <div className="bg-amber-900/20 p-4 rounded-lg border-l-4 border-amber-400">
-            <h4 className="font-bold text-amber-300 mb-2">If Asked to Exit Vehicle</h4>
+          <div className="bg-amber-900/20 light:bg-amber-50 p-4 rounded-lg border-l-4 border-amber-400">
+            <h4 className="font-bold text-amber-300 light:text-amber-800 mb-2">If Asked to Exit Vehicle</h4>
             <ul className="space-y-1 text-sm">
               <li className="font-semibold">• You must comply with the order to exit</li>
               <li>• Close and lock your door behind you</li>
@@ -510,8 +460,8 @@ const LawEnforcementInteraction = () => {
             </ul>
           </div>
 
-          <div className="bg-red-900/20 p-4 rounded-lg border-l-4 border-red-400">
-            <h4 className="font-bold text-red-300 mb-2">If They Search Anyway</h4>
+          <div className="bg-red-900/20 light:bg-red-50 p-4 rounded-lg border-l-4 border-red-400">
+            <h4 className="font-bold text-red-300 light:text-red-800 mb-2">If They Search Anyway</h4>
             <ul className="space-y-1 text-sm">
               <li>• If police have probable cause, they can search your car without your consent or a warrant</li>
               <li>• Say clearly that you don't consent, then step back and let it happen. Never physically resist</li>
@@ -520,8 +470,8 @@ const LawEnforcementInteraction = () => {
             </ul>
           </div>
 
-          <div className="bg-orange-900/20 p-4 rounded-lg border-l-4 border-orange-400">
-            <h4 className="font-bold text-orange-300 mb-2">⚠️ Breath & Chemical Tests Are Different</h4>
+          <div className="bg-orange-900/20 light:bg-orange-50 p-4 rounded-lg border-l-4 border-orange-400">
+            <h4 className="font-bold text-orange-300 light:text-orange-800 mb-2">⚠️ Breath & Chemical Tests Are Different</h4>
             <ul className="space-y-1 text-sm">
               <li>• Refusing consent to a search can't be used against you. Refusing a test can</li>
               <li>• NY law requires a roadside breath test when an officer asks after an accident or a traffic violation</li>
@@ -535,8 +485,8 @@ const LawEnforcementInteraction = () => {
 
       <Accordion title="⚖️ What to Say - Constitutional Invocations" isImportant={true}>
         <div className="space-y-4">
-          <div className="bg-red-900/20 p-4 rounded-lg border-l-4 border-red-400">
-            <h4 className="font-bold text-red-300 mb-2">⚠️ Critical Legal Reality</h4>
+          <div className="bg-red-900/20 light:bg-red-50 p-4 rounded-lg border-l-4 border-red-400">
+            <h4 className="font-bold text-red-300 light:text-red-800 mb-2">⚠️ Critical Legal Reality</h4>
             <p className="text-sm font-semibold mb-2">Explaining yourself almost never helps, and it often hurts:</p>
             <ul className="space-y-1 text-sm">
               <li>• Anything you say CAN be used against you in court</li>
@@ -547,8 +497,8 @@ const LawEnforcementInteraction = () => {
             </ul>
           </div>
 
-          <div className="bg-indigo-900/20 p-4 rounded-lg">
-            <h4 className="font-bold text-indigo-300 mb-2">Proper Legal Invocations</h4>
+          <div className="bg-indigo-900/20 light:bg-indigo-50 p-4 rounded-lg">
+            <h4 className="font-bold text-indigo-300 light:text-indigo-800 mb-2">Proper Legal Invocations</h4>
             <ul className="space-y-2 text-sm italic">
               <li>"I invoke and do not waive my 5th Amendment right to remain silent"</li>
               <li>"I invoke and do not waive my 4th Amendment right against unreasonable searches"</li>
@@ -563,8 +513,8 @@ const LawEnforcementInteraction = () => {
 
       <Accordion title="📱 Recording & Documentation Rights">
         <div className="space-y-4">
-          <div className="bg-green-900/20 p-4 rounded-lg">
-            <h4 className="font-bold text-green-300 mb-2">Recording is Your Right</h4>
+          <div className="bg-green-900/20 light:bg-green-50 p-4 rounded-lg">
+            <h4 className="font-bold text-green-300 light:text-green-800 mb-2">Recording is Your Right</h4>
             <ul className="space-y-1 text-sm">
               <li className="font-semibold">• Recording police is protected by the 1st Amendment, and in NY also by state law (Civil Rights Law §79-p)</li>
               <li>• Use dash cam or phone mount (hands-free)</li>
@@ -574,8 +524,8 @@ const LawEnforcementInteraction = () => {
               <li>• Upload/backup recordings immediately</li>
             </ul>
           </div>
-          <div className="bg-yellow-900/20 p-4 rounded-lg">
-            <h4 className="font-bold text-yellow-300 mb-2">Document Everything</h4>
+          <div className="bg-yellow-900/20 light:bg-yellow-50 p-4 rounded-lg">
+            <h4 className="font-bold text-yellow-300 light:text-yellow-800 mb-2">Document Everything</h4>
             <ul className="space-y-1 text-sm">
               <li>• Officer names and badge numbers</li>
               <li>• Patrol car numbers</li>
@@ -607,8 +557,8 @@ const LawEnforcementInteraction = () => {
 
       <Accordion title="👥 Passenger Constitutional Rights" isImportant={true}>
         <div className="space-y-6">
-          <div className="bg-blue-900/20 p-4 rounded-lg border-l-4 border-blue-400">
-            <h4 className="font-bold text-blue-300 mb-3">Key Passenger Rights</h4>
+          <div className="bg-blue-900/20 light:bg-blue-50 p-4 rounded-lg border-l-4 border-blue-400">
+            <h4 className="font-bold text-blue-300 light:text-blue-800 mb-3">Key Passenger Rights</h4>
             <div className="space-y-2 text-sm">
               <div className="flex items-start gap-2">
                 <CheckCircle className="h-4 w-4 text-green-500 mt-0.5 flex-shrink-0" />
@@ -627,15 +577,15 @@ const LawEnforcementInteraction = () => {
                 <span>Right to record the interaction <span className="text-xs">(1st Amendment)</span></span>
               </div>
               <div className="flex items-start gap-2">
-                <AlertTriangle className="h-4 w-4 text-amber-400 mt-0.5 flex-shrink-0" />
+                <AlertTriangle className="h-4 w-4 text-amber-400 light:text-amber-600 mt-0.5 flex-shrink-0" />
                 <span><strong>Don't walk away on your own.</strong> Passengers are legally detained for the whole stop. Ask "Am I free to leave?" and only go if they say yes</span>
               </div>
             </div>
           </div>
 
           <div className="grid md:grid-cols-2 gap-4">
-            <div className="bg-purple-900/20 p-4 rounded-lg">
-              <h4 className="font-bold text-purple-300 mb-2">Proper Invocations</h4>
+            <div className="bg-purple-900/20 light:bg-purple-50 p-4 rounded-lg">
+              <h4 className="font-bold text-purple-300 light:text-purple-800 mb-2">Proper Invocations</h4>
               <ul className="space-y-1 text-sm italic">
                 <li>"I invoke my 5th Amendment right to remain silent"</li>
                 <li>"I do not consent to any searches"</li>
@@ -644,8 +594,8 @@ const LawEnforcementInteraction = () => {
                 <li>"I need to speak with an attorney"</li>
               </ul>
             </div>
-            <div className="bg-orange-900/20 p-4 rounded-lg">
-              <h4 className="font-bold text-orange-300 mb-2">If Ordered to Exit</h4>
+            <div className="bg-orange-900/20 light:bg-orange-50 p-4 rounded-lg">
+              <h4 className="font-bold text-orange-300 light:text-orange-800 mb-2">If Ordered to Exit</h4>
               <ul className="space-y-1 text-sm">
                 <li className="font-semibold">• You must comply with the order</li>
                 <li>• Take ALL belongings with you</li>
@@ -658,8 +608,8 @@ const LawEnforcementInteraction = () => {
             </div>
           </div>
 
-          <div className="bg-yellow-900/20 p-4 rounded-lg">
-            <h4 className="font-bold text-yellow-300 mb-2">🚶 Passenger-Specific Rights</h4>
+          <div className="bg-yellow-900/20 light:bg-yellow-50 p-4 rounded-lg">
+            <h4 className="font-bold text-yellow-300 light:text-yellow-800 mb-2">🚶 Passenger-Specific Rights</h4>
             <ul className="space-y-2 text-sm">
               <li>• Police can order you out of the car and can keep you there until the stop ends</li>
               <li>• You are NOT responsible for the driver's violations</li>
@@ -669,8 +619,8 @@ const LawEnforcementInteraction = () => {
             </ul>
           </div>
 
-          <div className="bg-red-900/20 p-4 rounded-lg">
-            <h4 className="font-bold text-red-300 mb-2">⚠️ Important: Not Recommended</h4>
+          <div className="bg-red-900/20 light:bg-red-50 p-4 rounded-lg">
+            <h4 className="font-bold text-red-300 light:text-red-800 mb-2">⚠️ Important: Not Recommended</h4>
             <ul className="space-y-1 text-sm">
               <li>✗ Answering questions about where you're going/coming from</li>
               <li>✗ Providing ID unless legally required</li>
@@ -684,8 +634,8 @@ const LawEnforcementInteraction = () => {
       </Accordion>
 
       <Accordion title="📱 Recording as a Passenger">
-        <div className="bg-green-900/20 p-4 rounded-lg">
-          <h4 className="font-bold text-green-300 mb-2">Your Right to Record:</h4>
+        <div className="bg-green-900/20 light:bg-green-50 p-4 rounded-lg">
+          <h4 className="font-bold text-green-300 light:text-green-800 mb-2">Your Right to Record:</h4>
           <ul className="space-y-1 text-sm">
             <li>• You have a 1st Amendment right to record</li>
             <li>• Record quietly without interfering</li>
@@ -701,12 +651,12 @@ const LawEnforcementInteraction = () => {
   // --- Street Section ---
   const renderStreetInitial = () => (
     <div className="space-y-6">
-      <div className="bg-green-900/20 rounded-xl p-6">
+      <div className="bg-green-900/20 light:bg-green-50 rounded-xl p-6">
         <SectionHeader>
           <h2 className="text-2xl font-bold mb-4 text-text-primary">Street Stop Rights in New York</h2>
         </SectionHeader>
         <div className="bg-surface rounded-lg p-4 border-l-4 border-green-400">
-          <h3 className="font-bold text-green-300 mb-2">🔹 ID on the Street in New York</h3>
+          <h3 className="font-bold text-green-300 light:text-green-800 mb-2">🔹 ID on the Street in New York</h3>
           <div className="text-sm mb-4 text-text-muted space-y-2">
             <p>Police can ask you questions at any time, even with no suspicion. You don't have to answer.</p>
             <p>If they reasonably suspect you of a crime, NY law lets them demand your name, address and an explanation. Refusing isn't a crime by itself, and you never have to explain your conduct.</p>
@@ -723,8 +673,8 @@ const LawEnforcementInteraction = () => {
 
       <Accordion title="⚖️ Constitutional Rights on the Street" isImportant={true}>
         <div className="space-y-3">
-          <div className="bg-purple-900/20 p-4 rounded-lg">
-            <h4 className="font-bold text-purple-300 mb-2">Your Rights During Street Stops</h4>
+          <div className="bg-purple-900/20 light:bg-purple-50 p-4 rounded-lg">
+            <h4 className="font-bold text-purple-300 light:text-purple-800 mb-2">Your Rights During Street Stops</h4>
             <ul className="space-y-2 text-sm">
               <li>• <strong>4th Amendment:</strong> Protection from unreasonable detention - you cannot be detained without reasonable suspicion</li>
               <li>• <strong>5th Amendment:</strong> You don't have to answer any questions</li>
@@ -735,8 +685,8 @@ const LawEnforcementInteraction = () => {
             </ul>
           </div>
 
-          <div className="bg-red-900/20 p-4 rounded-lg">
-            <h4 className="font-bold text-red-300 mb-2">⚠️ Remember: Explanations Rarely Help You</h4>
+          <div className="bg-red-900/20 light:bg-red-50 p-4 rounded-lg">
+            <h4 className="font-bold text-red-300 light:text-red-800 mb-2">⚠️ Remember: Explanations Rarely Help You</h4>
             <p className="text-sm">
               What you say can be used against you, but you generally can't use your own street-corner explanation
               to help your defense later (hearsay rules). Give your name when the law requires it, otherwise stay silent. Never lie.
@@ -747,8 +697,8 @@ const LawEnforcementInteraction = () => {
 
       <Accordion title="📱 Recording Your Interaction" isImportant={true}>
         <div className="space-y-3">
-          <div className="bg-blue-900/20 p-4 rounded-lg">
-            <h4 className="font-bold text-blue-300 mb-2">Recording is Strongly Recommended</h4>
+          <div className="bg-blue-900/20 light:bg-blue-50 p-4 rounded-lg">
+            <h4 className="font-bold text-blue-300 light:text-blue-800 mb-2">Recording is Strongly Recommended</h4>
             <ul className="space-y-1 text-sm">
               <li className="font-semibold">• Recording police is protected by the 1st Amendment and NY Civil Rights Law §79-p</li>
               <li>• You can record officers performing duties in public</li>
@@ -764,8 +714,8 @@ const LawEnforcementInteraction = () => {
 
       <Accordion title="🛑 Terry Stops and Your Rights">
         <div className="space-y-3">
-          <div className="bg-yellow-900/20 p-4 rounded-lg">
-            <h4 className="font-bold text-yellow-300 mb-2">Understanding Terry Stops</h4>
+          <div className="bg-yellow-900/20 light:bg-yellow-50 p-4 rounded-lg">
+            <h4 className="font-bold text-yellow-300 light:text-yellow-800 mb-2">Understanding Terry Stops</h4>
             <ul className="space-y-1 text-sm">
               <li>• Police need "reasonable suspicion" to detain you</li>
               <li>• Pat-downs are only for weapons, not general searches</li>
@@ -783,12 +733,12 @@ const LawEnforcementInteraction = () => {
   // --- Home Section ---
   const renderHomeInitial = () => (
     <div className="space-y-6">
-      <div className="bg-yellow-900/20 rounded-xl p-6">
+      <div className="bg-yellow-900/20 light:bg-yellow-50 rounded-xl p-6">
         <SectionHeader>
           <h2 className="text-2xl font-bold mb-4 text-text-primary">Police at Your Home</h2>
         </SectionHeader>
         <div className="bg-surface rounded-lg p-4 border-l-4 border-yellow-400">
-          <h3 className="font-bold text-yellow-300 mb-2">🏠 Your Home's 4th Amendment Protection</h3>
+          <h3 className="font-bold text-yellow-300 light:text-yellow-800 mb-2">🏠 Your Home's 4th Amendment Protection</h3>
           <p className="text-sm mb-4 text-text-muted">Your home has the strongest Fourth Amendment protections against unreasonable searches.</p>
           <div className="space-y-2 text-text-secondary">
             <div>✓ You don't have to open the door</div>
@@ -801,8 +751,8 @@ const LawEnforcementInteraction = () => {
       </div>
 
       <Accordion title="⚖️ Constitutional Protections at Home" isImportant={true}>
-        <div className="bg-indigo-900/20 p-4 rounded-lg">
-          <h4 className="font-bold text-indigo-300 mb-2">What to Say Through the Door</h4>
+        <div className="bg-indigo-900/20 light:bg-indigo-50 p-4 rounded-lg">
+          <h4 className="font-bold text-indigo-300 light:text-indigo-800 mb-2">What to Say Through the Door</h4>
           <ul className="space-y-1 text-sm italic">
             <li>"I invoke my 4th Amendment right against unreasonable searches"</li>
             <li>"I do not consent to any entry or searches"</li>
@@ -814,8 +764,8 @@ const LawEnforcementInteraction = () => {
       </Accordion>
 
       <Accordion title="🚪 When They Can Enter Without Your Permission" isImportant={true}>
-        <div className="bg-red-900/20 p-4 rounded-lg">
-          <h4 className="font-bold text-red-300 mb-2">Limited Exceptions (Very Narrow):</h4>
+        <div className="bg-red-900/20 light:bg-red-50 p-4 rounded-lg">
+          <h4 className="font-bold text-red-300 light:text-red-800 mb-2">Limited Exceptions (Very Narrow):</h4>
           <ul className="space-y-2 text-sm">
             <li>• <strong>Valid Search Warrant:</strong> Must be signed by a judge, not just police</li>
             <li>• <strong>Arrest Warrant:</strong> Only for the named person's own home, and only if police reasonably believe they're inside</li>
@@ -829,8 +779,8 @@ const LawEnforcementInteraction = () => {
       </Accordion>
 
       <Accordion title="📋 Warrant Requirements">
-        <div className="bg-blue-900/20 p-4 rounded-lg">
-          <h4 className="font-bold text-blue-300 mb-2">Valid Warrant Must Have:</h4>
+        <div className="bg-blue-900/20 light:bg-blue-50 p-4 rounded-lg">
+          <h4 className="font-bold text-blue-300 light:text-blue-800 mb-2">Valid Warrant Must Have:</h4>
           <ul className="space-y-1 text-sm">
             <li>• Judge's signature (not just police)</li>
             <li>• Correct address</li>
@@ -838,15 +788,15 @@ const LawEnforcementInteraction = () => {
             <li>• Recent date (not expired)</li>
             <li>• Ask them to slip it under the door or show through window</li>
           </ul>
-          <div className="bg-red-900/20 p-3 rounded mt-3">
-            <p className="text-xs font-semibold text-red-300">⚠️ IMPORTANT: An arrest warrant for a person does NOT grant entry to a home unless they have reasonable belief the person is inside AND it's that person's residence</p>
+          <div className="bg-red-900/20 light:bg-red-50 p-3 rounded mt-3">
+            <p className="text-xs font-semibold text-red-300 light:text-red-800">⚠️ IMPORTANT: An arrest warrant for a person does NOT grant entry to a home unless they have reasonable belief the person is inside AND it's that person's residence</p>
           </div>
         </div>
       </Accordion>
 
       <Accordion title="⚠️ NEVER Open Your Door" isImportant={true}>
-        <div className="bg-red-900/20 p-4 rounded-lg">
-          <h4 className="font-bold text-red-300 mb-2">Why Opening the Door is Dangerous:</h4>
+        <div className="bg-red-900/20 light:bg-red-50 p-4 rounded-lg">
+          <h4 className="font-bold text-red-300 light:text-red-800 mb-2">Why Opening the Door is Dangerous:</h4>
           <ul className="space-y-2 text-sm">
             <li>• Officers may put their foot in to prevent closing</li>
             <li>• They may claim to "see" or "smell" something as probable cause</li>
@@ -863,12 +813,12 @@ const LawEnforcementInteraction = () => {
   // --- ICE Section ---
   const renderIceInitial = () => (
     <div className="space-y-6">
-      <div className="bg-purple-900/20 rounded-xl p-6">
+      <div className="bg-purple-900/20 light:bg-purple-50 rounded-xl p-6">
         <SectionHeader>
           <h2 className="text-2xl font-bold mb-4 text-text-primary">ICE Encounters</h2>
         </SectionHeader>
         <div className="bg-surface rounded-lg p-4 border-l-4 border-purple-400">
-          <h3 className="font-bold text-purple-300 mb-2">⚖️ Constitutional Rights Apply to Everyone</h3>
+          <h3 className="font-bold text-purple-300 light:text-purple-800 mb-2">⚖️ Constitutional Rights Apply to Everyone</h3>
           <p className="text-sm mb-4 text-text-muted">Regardless of immigration status, the Constitution protects you.</p>
           <div className="space-y-2 text-text-secondary">
             <div>✓ 5th Amendment right to remain silent</div>
@@ -881,8 +831,8 @@ const LawEnforcementInteraction = () => {
       </div>
 
       <Accordion title="📋 If ICE Comes to Your Home" isImportant={true}>
-        <div className="bg-blue-900/20 p-4 rounded-lg">
-          <h4 className="font-bold text-blue-300 mb-2">Critical Steps:</h4>
+        <div className="bg-blue-900/20 light:bg-blue-50 p-4 rounded-lg">
+          <h4 className="font-bold text-blue-300 light:text-blue-800 mb-2">Critical Steps:</h4>
           <ul className="space-y-2 text-sm">
             <li className="font-semibold">• DO NOT open the door</li>
             <li>• Ask: "Do you have a warrant signed by a judge?"</li>
@@ -897,8 +847,8 @@ const LawEnforcementInteraction = () => {
       </Accordion>
 
       <Accordion title="⚖️ Know Your Rights Statements">
-        <div className="bg-purple-900/20 p-4 rounded-lg">
-          <h4 className="font-bold text-purple-300 mb-2">What to Say:</h4>
+        <div className="bg-purple-900/20 light:bg-purple-50 p-4 rounded-lg">
+          <h4 className="font-bold text-purple-300 light:text-purple-800 mb-2">What to Say:</h4>
           <ul className="space-y-1 text-sm italic">
             <li>"I invoke my 5th Amendment right to remain silent"</li>
             <li>"I do not consent to any entry or searches"</li>
@@ -910,7 +860,7 @@ const LawEnforcementInteraction = () => {
       </Accordion>
 
       <Accordion title="🚶 If ICE Stops You in Public" isImportant={true}>
-        <div className="bg-amber-900/20 p-4 rounded-lg">
+        <div className="bg-amber-900/20 light:bg-amber-50 p-4 rounded-lg">
           <ul className="space-y-2 text-sm">
             <li>• Ask: "Am I free to go?" If yes, walk away calmly. Don't run</li>
             <li>• You can stay silent about where you were born, your status, and how you entered the U.S.</li>
@@ -927,12 +877,12 @@ const LawEnforcementInteraction = () => {
   // --- Rights Section ---
   const renderRightsInitial = () => (
     <div className="space-y-6">
-      <div className="bg-indigo-900/20 rounded-xl p-6">
+      <div className="bg-indigo-900/20 light:bg-indigo-50 rounded-xl p-6">
         <SectionHeader>
           <h2 className="text-2xl font-bold mb-4 text-text-primary">Constitutional Rights During Law Enforcement Interactions</h2>
         </SectionHeader>
         <div className="bg-surface rounded-lg p-4 border-l-4 border-indigo-400">
-          <h3 className="font-bold text-indigo-300 mb-2">📜 Key Amendments in Police Encounters</h3>
+          <h3 className="font-bold text-indigo-300 light:text-indigo-800 mb-2">📜 Key Amendments in Police Encounters</h3>
           <div className="space-y-3 text-sm text-text-secondary">
             <div>
               <strong>1st Amendment:</strong> Right to record police, freedom of speech, assembly
@@ -959,8 +909,8 @@ const LawEnforcementInteraction = () => {
       </div>
 
       <Accordion title="⚡ Critical Phrases for Any Police Encounter" isImportant={true}>
-        <div className="bg-purple-900/20 p-4 rounded-lg">
-          <h4 className="font-bold text-purple-300 mb-2">Say These Clearly and Calmly:</h4>
+        <div className="bg-purple-900/20 light:bg-purple-50 p-4 rounded-lg">
+          <h4 className="font-bold text-purple-300 light:text-purple-800 mb-2">Say These Clearly and Calmly:</h4>
           <ul className="space-y-2 text-sm italic">
             <li>"I invoke and do not waive my 5th Amendment right to remain silent"</li>
             <li>"I invoke and do not waive my 4th Amendment rights"</li>
@@ -975,8 +925,8 @@ const LawEnforcementInteraction = () => {
       </Accordion>
 
       <Accordion title="⚠️ Why You Shouldn't Explain Yourself" isImportant={true}>
-        <div className="bg-red-900/20 p-4 rounded-lg">
-          <h4 className="font-bold text-red-300 mb-2">The Legal Asymmetry - Statements Usually Only Hurt You:</h4>
+        <div className="bg-red-900/20 light:bg-red-50 p-4 rounded-lg">
+          <h4 className="font-bold text-red-300 light:text-red-800 mb-2">The Legal Asymmetry - Statements Usually Only Hurt You:</h4>
           <ul className="space-y-2 text-sm">
             <li className="font-semibold">• Your statements CAN be used AGAINST you in court</li>
             <li className="font-semibold">• You generally CAN'T use your own out-of-court explanation to HELP you (hearsay rules)</li>
@@ -985,15 +935,15 @@ const LawEnforcementInteraction = () => {
             <li>• Innocent explanations can accidentally provide probable cause</li>
             <li>• Your defense belongs in court with your attorney, not on the street</li>
           </ul>
-          <p className="text-xs mt-3 font-semibold bg-red-900/30 p-2 rounded">
+          <p className="text-xs mt-3 font-semibold bg-red-900/30 light:bg-red-100 p-2 rounded">
             REMEMBER: Give your name and documents when the law requires them. Beyond that, say nothing. Never lie: lying to police can be a separate crime, while silence never is.
           </p>
         </div>
       </Accordion>
 
       <Accordion title="🚫 What NOT to Do (Protecting Your Rights)">
-        <div className="bg-red-900/20 p-4 rounded-lg">
-          <h4 className="font-bold text-red-300 mb-2">Never Recommended:</h4>
+        <div className="bg-red-900/20 light:bg-red-50 p-4 rounded-lg">
+          <h4 className="font-bold text-red-300 light:text-red-800 mb-2">Never Recommended:</h4>
           <ul className="space-y-1 text-sm">
             <li>✗ Answering questions during an investigation</li>
             <li>✗ Trying to "explain your side" (it generally can't help you in court)</li>
@@ -1012,8 +962,8 @@ const LawEnforcementInteraction = () => {
       </Accordion>
 
       <Accordion title="📱 Always Document Everything">
-        <div className="bg-green-900/20 p-4 rounded-lg">
-          <h4 className="font-bold text-green-300 mb-2">Recording and Documentation Rights:</h4>
+        <div className="bg-green-900/20 light:bg-green-50 p-4 rounded-lg">
+          <h4 className="font-bold text-green-300 light:text-green-800 mb-2">Recording and Documentation Rights:</h4>
           <ul className="space-y-1 text-sm">
             <li>• Recording police is a 1st Amendment protected activity</li>
             <li>• Get badge numbers, names, patrol car numbers</li>
@@ -1027,8 +977,8 @@ const LawEnforcementInteraction = () => {
       </Accordion>
 
       <Accordion title="⚖️ After the Encounter">
-        <div className="bg-yellow-900/20 p-4 rounded-lg">
-          <h4 className="font-bold text-yellow-300 mb-2">Protecting Your Rights After:</h4>
+        <div className="bg-yellow-900/20 light:bg-yellow-50 p-4 rounded-lg">
+          <h4 className="font-bold text-yellow-300 light:text-yellow-800 mb-2">Protecting Your Rights After:</h4>
           <ul className="space-y-1 text-sm">
             <li>• File complaints for rights violations. For NYPD, contact the Civilian Complaint Review Board (CCRB) or call 311</li>
             <li>• Contact civil rights attorneys</li>
@@ -1086,56 +1036,44 @@ const LawEnforcementInteraction = () => {
       animate={{ opacity: 1 }}
       transition={{ duration: 0.3 }}
     >
-      <Card className="w-full max-w-[640px] mx-auto bg-background border-0 shadow-none">
-        <CardHeader className="bg-surface rounded-t-xl px-4 sm:px-6 py-6">
-          <div className="flex items-center justify-between">
-            <div>
-              <CardTitle className="text-[28px] font-bold text-text-primary leading-[1.3]">Constitutional Rights Guide</CardTitle>
-              <CardDescription className="text-text-muted text-base mt-1">
-                Know Your Rights During Law Enforcement Encounters
-              </CardDescription>
+      <div className="w-full max-w-[640px] mx-auto">
+        <header className="bg-surface px-4 sm:px-6 py-4 sm:rounded-b-xl">
+          <div className="flex items-center justify-between gap-3">
+            <div className="flex items-center gap-3 min-w-0">
+              <Shield className="h-7 w-7 text-accent-gold shrink-0" />
+              <div className="min-w-0">
+                <h1 className="text-xl sm:text-2xl font-bold text-text-primary leading-tight">Constitutional Rights Guide</h1>
+                <p className="hidden sm:block text-text-muted text-sm mt-0.5">
+                  Know Your Rights During Law Enforcement Encounters
+                </p>
+              </div>
             </div>
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-1 shrink-0">
               <ShareButton />
               <button
                 onClick={toggleTheme}
                 className="p-2 rounded-lg hover:bg-background/30 transition-colors text-text-muted hover:text-text-primary"
                 aria-label={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
               >
-                {theme === 'dark' ? (
-                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
-                ) : (
-                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
-                )}
+                {theme === 'dark' ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
               </button>
-              <Shield className="h-8 w-8 text-accent-gold" />
             </div>
           </div>
-          <div className="mt-4 p-3 bg-background/50 rounded-lg">
-            <p className="text-sm text-text-muted leading-relaxed italic">
-              <strong className="text-text-secondary not-italic">Legal Disclaimer:</strong> This app provides general information about legal rights in the United States.
-              It is not legal advice, and no attorney-client relationship is created. Laws may vary by state.
-              For legal advice specific to your situation, consult a licensed attorney.
-            </p>
-          </div>
-        </CardHeader>
+          <Disclaimer />
+        </header>
 
-        <Breadcrumb section={section} step={currentStep} navigate={navigate} />
-
-        <CardContent className="pt-4 px-4 sm:px-6">
-          <div className="space-y-6">
-            <ProgressBar completed={completedSections.size} total={10} />
+        <main className="px-4 sm:px-6 pt-4 pb-6">
+          <div className="space-y-4">
             <SearchBar
               query={searchQuery}
               setQuery={setSearchQuery}
               results={searchResults}
               onResultClick={handleSearchResultClick}
             />
-            <QuickActions navigate={navigate} />
+            <InstallPrompt />
+            <Breadcrumb section={section} step={currentStep} navigate={navigate} />
 
             <div>
-              <h3 className="text-xl font-semibold mb-4 text-text-primary leading-[1.3]">Choose Your Situation</h3>
-
               {/* Desktop tab bar */}
               <div className="hidden sm:grid w-full grid-cols-5 gap-1 bg-muted p-1 rounded-lg mb-6">
                 {validSections.map(s => {
@@ -1173,8 +1111,8 @@ const LawEnforcementInteraction = () => {
               </AnimatePresence>
             </div>
           </div>
-        </CardContent>
-      </Card>
+        </main>
+      </div>
       <BottomNav activeSection={section} navigate={navigate} />
     </motion.div>
   );

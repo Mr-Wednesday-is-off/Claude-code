@@ -1,5 +1,7 @@
 @import "tailwindcss";
 
+@custom-variant light (&:where([data-theme="light"], [data-theme="light"] *));
+
 /* Dark mode (default) CSS custom properties */
 :root {
   --app-background: #0f172a;
@@ -35,8 +37,8 @@
   --app-border-subtle: #e2e8f0;
   --app-muted: #f1f5f9;
   --app-muted-foreground: #64748b;
-  --app-accent-gold: #f59e0b;
-  --app-accent-gold-hover: #d97706;
+  --app-accent-gold: #b45309;
+  --app-accent-gold-hover: #92400e;
   --app-input: #e2e8f0;
 }
 
