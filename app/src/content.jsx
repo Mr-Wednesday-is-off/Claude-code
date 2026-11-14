@@ -489,7 +489,7 @@ export function getSectionContent(section, currentStep, navigate) {
             <div>✓ 4th Amendment right against unreasonable searches</div>
             <div>✓ Right to a lawyer in immigration court, but not a free one (it's civil, not criminal). Ask for legal aid</div>
             <div>✓ Do not sign anything without an attorney</div>
-            <div>✓ Right to refuse entry without judicial warrant</div>
+            <div>✓ Right to keep your door closed and ask for a warrant signed by a judge</div>
           </div>
         </div>
       </div>
@@ -500,13 +500,24 @@ export function getSectionContent(section, currentStep, navigate) {
           <ul className="space-y-2 text-sm">
             <li className="font-semibold">• DO NOT open the door</li>
             <li>• Ask: "Do you have a warrant signed by a judge?"</li>
-            <li>• <strong>Administrative warrants (Form I-200, I-205) are NOT sufficient for entry</strong></li>
-            <li>• Only a judicial warrant (signed by a judge) allows entry</li>
+            <li>• <strong>Administrative warrants (Form I-200, I-205) are signed by ICE officers, not judges</strong></li>
+            <li>• Courts have long required a warrant signed by a judge to enter a home without consent</li>
+            <li>• Ask them to slip the warrant under the door or hold it to a window, and check who signed it</li>
             <li>• Say: "I do not consent to entry"</li>
             <li>• Say: "I invoke my right to remain silent"</li>
             <li>• Have emergency contacts and attorney info ready</li>
             <li>• Document everything, record if possible</li>
           </ul>
+          <div className="bg-amber-900/20 light:bg-amber-50 p-3 rounded mt-3 border-l-4 border-amber-400">
+            <h5 className="font-bold text-amber-300 light:text-amber-800 mb-2">⚠️ If Someone in Your Home Has a Final Deportation Order</h5>
+            <ul className="space-y-2 text-sm">
+              <li>• ICE now claims an I-205 warrant lets officers force their way into the home of someone with a final order of removal</li>
+              <li>• That claim is being challenged in federal court, and one federal judge has ruled such an entry unconstitutional. It is not settled</li>
+              <li>• Still don't open the door or consent to entry</li>
+              <li className="font-semibold">• If they force their way in, don't physically resist. Say "I do not consent," stay silent, record, and call a lawyer</li>
+              <li>• If you have a final order, talk to an immigration lawyer now, before anyone knocks</li>
+            </ul>
+          </div>
         </div>
       </Accordion>
 
@@ -749,7 +760,8 @@ export function getSectionContent(section, currentStep, navigate) {
             <li>• <a className="underline" href="https://www.nysenate.gov/legislation/laws/CPL/140.20" target="_blank" rel="noopener noreferrer">NY Criminal Procedure Law §140.20 (after an arrest)</a></li>
             <li>• <a className="underline" href="https://www.nysenate.gov/legislation/laws/VAT/1194" target="_blank" rel="noopener noreferrer">NY Vehicle and Traffic Law §1194 (breath and chemical tests)</a></li>
             <li>• <a className="underline" href="https://www.nyc.gov/site/ccrb/complaints/file-a-complaint/right-to-know-act.page" target="_blank" rel="noopener noreferrer">NYC Right to Know Act (CCRB)</a></li>
-            <li>• <a className="underline" href="https://law.justia.com/cases/new-york/court-of-appeals/2026/no-59.html" target="_blank" rel="noopener noreferrer">Reyes v. City of New York (NY Court of Appeals, 2026)</a></li>
+            <li>• <a className="underline" href="https://www.nycourts.gov/reporter/current/3dseries/2026/2026_03914.shtml" target="_blank" rel="noopener noreferrer">Reyes v. City of New York (NY Court of Appeals, 2026)</a></li>
+            <li>• <a className="underline" href="https://protectdemocracy.org/work/home-entry-memo/" target="_blank" rel="noopener noreferrer">Gibson Brown v. Mullin (lawsuit challenging ICE's home-entry policy)</a></li>
             <li>• <a className="underline" href="https://www.law.cornell.edu/uscode/text/8/1304" target="_blank" rel="noopener noreferrer">8 U.S.C. §1304(e) (carrying immigration papers)</a></li>
           </ul>
         </div>

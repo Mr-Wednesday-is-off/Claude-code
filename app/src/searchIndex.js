@@ -135,9 +135,9 @@ export const searchIndex = [
   {
     id: 'ice-home',
     title: 'ICE at Your Home',
-    keywords: ['ice', 'immigration', 'deportation', 'i-200', 'i-205', 'administrative warrant', 'judicial warrant'],
+    keywords: ['ice', 'immigration', 'deportation', 'i-200', 'i-205', 'administrative warrant', 'judicial warrant', 'final order', 'removal order', 'forced entry'],
     section: '/ice',
-    description: 'Critical steps when ICE comes to your home. Administrative warrants are NOT sufficient for entry.',
+    description: 'Critical steps when ICE comes to your home, and what ICE now claims about administrative warrants.',
   },
   {
     id: 'ice-rights-statements',
