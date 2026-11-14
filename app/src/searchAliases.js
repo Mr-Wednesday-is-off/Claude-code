@@ -29,7 +29,11 @@ export const searchAliases = {
   'green card': ['ice', 'immigration'],
   'visa': ['ice', 'immigration'],
   'detained': ['detained', 'free to go', 'free to leave'],
-  'arrest': ['arrested', 'detained', 'attorney'],
+  'arrest': ['arrested', 'attorney'],
+  'jail': ['arrested', 'precinct'],
+  'handcuffed': ['arrested'],
+  'bail': ['arraignment'],
+  'court': ['arraignment', 'judge'],
 };
 
 export const sectionAliases = {
@@ -44,6 +48,8 @@ export const sectionAliases = {
   'home': '/home',
   'house': '/home',
   'door': '/home',
+  'arrest': '/arrest',
+  'arrested': '/arrest',
   'ice': '/ice',
   'immigration': '/ice',
   'rights': '/rights',
