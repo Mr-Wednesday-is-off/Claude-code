@@ -5,6 +5,7 @@ export const routes = [
   { path: '/street', section: 'street', step: 'initial', label: 'Street Interaction' },
   { path: '/home', section: 'home', step: 'initial', label: 'Home Encounter' },
   { path: '/ice', section: 'ice', step: 'initial', label: 'ICE Encounter' },
+  { path: '/arrest', section: 'arrest', step: 'initial', label: 'If Arrested' },
   { path: '/rights', section: 'rights', step: 'initial', label: 'Rights Overview' },
 ];
 
@@ -13,7 +14,8 @@ export const sectionBasePaths = {
   street: '/street',
   home: '/home',
   ice: '/ice',
+  arrest: '/arrest',
   rights: '/rights',
 };
 
-export const validSections = ['vehicle', 'street', 'home', 'ice', 'rights'];
+export const validSections = ['vehicle', 'street', 'home', 'ice', 'arrest', 'rights'];

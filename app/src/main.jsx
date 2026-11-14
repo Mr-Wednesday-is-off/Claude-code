@@ -7,6 +7,7 @@ import '@fontsource/inter/600.css'
 import '@fontsource/inter/700.css'
 import './index.css'
 import App from './App.jsx'
+import { LanguageProvider } from './i18n.jsx'
 
 // Hash routing needs a real page address. Sandboxed viewers (e.g. in-app file
 // previews, srcdoc iframes) don't have one and would crash on startup, so fall
@@ -26,6 +27,7 @@ const useHash = canUseHashRouter()
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
+    <LanguageProvider>
     {useHash ? (
       <HashRouter>
         <App />
@@ -35,6 +37,7 @@ createRoot(document.getElementById('root')).render(
         <App />
       </MemoryRouter>
     )}
+    </LanguageProvider>
   </StrictMode>,
 )
 
